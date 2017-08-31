@@ -13,7 +13,7 @@ option java_outer_classname = "StMessage";
 
 message LoginRequet{
   required string devno = 1;
-  required string type = 2;
+  required int32 type = 2;
   optional string version =3;
   optional string authCode =4 ; 
 }
