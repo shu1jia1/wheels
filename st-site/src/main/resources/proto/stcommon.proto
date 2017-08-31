@@ -1,0 +1,56 @@
+syntax = "proto2";
+
+package stcommon;
+
+option java_package = "com.st.common";
+option java_outer_classname = "STCommon";
+
+//消息
+message STMessage {
+  required MessageHeader header = 1;
+  optional bytes payload = 2;  //消息数据，可以为空，例如心跳消息就是无数据的
+}
+
+//消息头
+message MessageHeader{
+  required string messageId = 1;
+  required string correlationId = 2;
+  optional TransferType transferType = 3;   //如需要ack,此字段标识为con,Ack标识为ack
+  enum TransferType{
+      CON = 0;
+      ACK = 1;
+  }
+  optional CmdCode cmdCode=4;  // 命令码
+  optional Address dest=5; //消息目标
+  optional Address src=6;  //消息源
+}
+
+
+//地址
+message Address{
+    required AddressType destType  = 1;  //标志设备类型 注:如果能接受字符串的话，就使用设备缩写，不能就用int
+    required string Identify = 2;   //设备唯一标志,可以填设备devno
+}
+
+//
+enum AddressType {
+    MACHINE = 0;   //主机名字缩写(需修改)
+    DTU = 1;
+    CLOUD = 2;
+}
+
+//标识消息名称和命令码之间关系
+enum CmdCode{
+    CMD_HeartBeat = 0; //心跳
+
+    CMD_ForceLogin = 1;
+
+    CMD_LoginRequet = 2; //登陆
+    CMD_LoginResponse = 1002; //登陆回应
+
+    //注:获取设备列表的接口不在tcp通道上
+    //ListDeviceRequest = 3;
+    //ListDeviceResponse = 1003; 
+
+    //CMD_Transfer = 100; //转发，如果需要云端解析转发的消息，每个转发消息需要订不同命令码
+}

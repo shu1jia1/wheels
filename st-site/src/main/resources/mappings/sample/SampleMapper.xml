@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 这里namespace必须是DAO的路径” -->
+<mapper namespace="com.github.shu1jia1.site.sample.dao.SampleDao">
+    <insert id="insertTestData">
+        insert into ${tableName} (name,age)
+        values(#{name},#{age})
+    </insert>
+    
+    <insert id="insert" parameterType="com.github.shu1jia1.site.sample.entity.SampleUser">
+        insert into cm_user(id,name) values
+        <foreach collection="datas" item="data" index="index" separator=",">
+            (#{data.id},
+            #{data.name})
+        </foreach>
+    </insert>
+    
+    <delete id="delete" parameterType="String">
+        delete from cm_user where id = #{id}
+    </delete>
+
+    <delete id="deleteByTable">
+        delete from ${tableName} where id = #{id}
+    </delete>
+
+    <delete id="deleteMuti">
+        delete from ${tableName} where id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper> 
+

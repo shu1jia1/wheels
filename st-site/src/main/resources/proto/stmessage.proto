@@ -1,0 +1,24 @@
+syntax = "proto2";
+
+package stcommon;
+
+option java_package = "com.st.common";
+option java_outer_classname = "StMessage";
+
+//无内容
+//message ForceLogin
+
+//无内容
+//message HeartBeat
+
+message LoginRequet{
+  required string devno = 1;
+  required string type = 2;
+  optional string version =3;
+  optional string authCode =4 ; 
+}
+
+message LoginResponse{
+  required bool result = 1; //登陆结果 true 成功，false拒绝
+  optional string msg = 2; 
+}
