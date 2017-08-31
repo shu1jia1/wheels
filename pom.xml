@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 组织ID -->
+    <groupId>com.github.shu1jia1</groupId>
+    <!-- 产品ID -->
+    <artifactId>wheels</artifactId>
+    <!-- 版本号 -->
+    <version>0.0.1-SNAPSHOT</version>
+    <!-- 打包方式 -->
+    <packaging>pom</packaging>
+    <description>wheels</description>
+
+    <!-- 子模块 -->
+    <modules>
+        <module>wls-common</module>
+        <!-- <module>wls-site</module>
+        <module>wls-tk</module> -->
+		<module>st-site</module>
+    </modules>
+
+    <!-- 用户自定义属性 -->
+    <properties>
+        <java-version>1.7</java-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.common-io>1.4</version.common-io>
+
+        <org.springframework-version>4.1.6.RELEASE</org.springframework-version>
+        <validator.version>5.1.1.Final</validator.version>
+        <org.slf4j-version>1.6.1</org.slf4j-version>
+        <org.mybatis-version>3.2.7</org.mybatis-version>
+    </properties>
+
+    <!-- 依赖关系 -->
+    <dependencies>
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${org.springframework-version}</version>
+            <exclusions>
+                <!-- Exclude Commons Logging in favor of SLF4j -->
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${org.slf4j-version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${org.mybatis-version}</version>
+        </dependency>
+
+        <!-- bean validate -->
+        <!-- 已经在hibernate validator中包含 <dependency> <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId> <version>1.0.0.GA</version> </dependency> -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${validator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>3.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+        <!-- 和slf4j不可以同时使用 <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1</version>
+            </dependency> -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+ <!--        <dependency>
+            <groupId>3rd.oracle</groupId>
+            <artifactId>jdbc6</artifactId>
+            <version>1.0</version>
+        </dependency> -->
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.35</version>
+        </dependency>
+
+    </dependencies>
+
+    <!-- 定义部署到的库，用户名密码在settings.xml中指 -->
+<!--     <distributionManagement>
+        <snapshotRepository>
+            <id>zxam-snapshots</id>
+            <name>zxam Snapshot Repository</name>
+            <url>http://10.9.29.92:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement> -->
+
+    <!-- 构建配置 -->
+    <build>
+        <!-- 通过配置compile插件定义使用的jdk 版本 -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>${java-version}</source>
+                    <target>${java-version}</target>
+                </configuration>
+            </plugin>
+            <!-- findbugs -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <!-- <configLocation>${basedir}/springside-findbugs.xml</configLocation> -->
+                    <threshold>High</threshold>
+                    <effort>Default</effort>
+                    <findbugsXmlOutput>true</findbugsXmlOutput>
+                    <!-- findbugs xml输出路径 -->
+                    <!-- <findbugsXmlOutputDirectory>target/site/findbugs</findbugsXmlOutputDirectory> -->
+                </configuration>
+            </plugin>
+
+            <!-- checkStyle -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <!-- <properties> <checkstyle.config.location>my_checks.xml</checkstyle.config.location>
+                    </properties> -->
+                <version>2.9.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.5.1</version>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
