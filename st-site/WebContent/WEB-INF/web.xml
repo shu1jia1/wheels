@@ -9,8 +9,8 @@
 		<!-- <param-value>/WEB-INF/spring/springmvc-mybatis.xml</param-value> -->
 		<param-value>
 <!-- 		classpath:spring/spring-security.xml, -->
-        classpath:spring/spring-beans.xml,                        
-        classpath:spring/spring-radis-context.xml,                        
+       	classpath:spring/spring-beans.xml,                      
+        <!-- classpath:spring/spring-radis-context.xml,                      -->   
         classpath:spring/springmvc-mybatis.xml</param-value>
 	</context-param>
 

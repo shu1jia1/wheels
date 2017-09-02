@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/tx
+ 	   http://www.springframework.org/schema/tx/spring-tx.xsd
+ 	   http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+      ">
+    <context:property-placeholder location="classpath:web.properties" />
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="maxActive" value="${jdbc.pool.maxActive}" />
+        <property name="maxIdle" value="10" />
+        <property name="initialSize" value="${jdbc.pool.init}" />
+        <property name="maxWait" value="10" />
+        <property name="defaultAutoCommit" value="true" />
+        <property name="removeAbandoned" value="true" />
+        <property name="removeAbandonedTimeout" value="60" />
+        <property name="logAbandoned" value="true" />
+        <property name="timeBetweenEvictionRunsMillis">
+            <value>3600000</value><!--1 hours -->
+        </property>
+        <property name="testWhileIdle">
+            <value>true</value>
+        </property>
+        <property name="validationQuery">
+            <value>${jdbc.testSql}</value>
+        </property>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath*:mappings/**/*Mapper.xml" />
+        <property name="typeAliasesPackage" value="com.github.shu1jia1" />
+        <property name="plugins">
+            <array>
+                <bean class="com.github.shu1jia1.site.base.page.interceptor.MybatisPageInterceptor">
+                    <property name="properties">
+                        <value>
+                            dialect=mysql    <!-- 后续支持 -->
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+        <!-- <property name="transactionFactory">
+            <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
+            </property> -->
+    </bean>
+
+    <!-- 查 找 类 路 径 下 的 映 射 器 并 自 动 将 它 们 创 建 成 MapperFactoryBean -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.github.shu1jia1.site,com.st" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <!-- 声明式容器事务管理 ,transaction-manager指定事务管理器为transactionManager -->
+    <!-- <tx:advice id ="txAdvice" transaction-manager="transactionManager" >
+        <tx:attributes >
+        <tx:method name ="add*" propagation="REQUIRED" />
+        <tx:method name ="insert*" propagation="REQUIRED" />
+        <tx:method name ="del*" propagation="REQUIRED" />
+        <tx:method name ="update*" propagation="REQUIRED" />
+        <tx:method name ="*" read-only="true" />
+        </tx:attributes >
+        </tx:advice >
+
+        <aop:config expose-proxy ="true">
+        <aop:pointcut id ="txPointcut" expression="execution(* com.shu1jia1.github.sample.mvc.service.SampleService.*(..))"
+        />
+        <aop:advisor pointcut-ref ="txPointcut" advice-ref="txAdvice" />
+        </aop:config> -->
+
+    <bean id="defaultLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler"
+        lazy-init="true" />
+
+    <context:annotation-config />
+    <!-- 不扫描controller,先载入service -->
+    <context:component-scan base-package="com.github.shu1jia1,com.st">
+        <context:exclude-filter type="annotation"
+            expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+</beans>  

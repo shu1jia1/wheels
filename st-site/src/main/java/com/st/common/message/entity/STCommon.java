@@ -23,39 +23,55 @@ public final class STCommon {
   public enum AddressType
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
+     * <code>GEOMATIVE = 0;</code>
+     */
+    GEOMATIVE(0),
+    /**
+     * <code>CLOUD = 1;</code>
+     */
+    CLOUD(1),
+    /**
      * <pre>
      *主机名字缩写(需修改)
      * </pre>
      *
-     * <code>MACHINE = 0;</code>
+     * <code>MACHINE = 2;</code>
      */
-    MACHINE(0),
+    MACHINE(2),
     /**
-     * <code>DTU = 1;</code>
+     * <code>DTU = 3;</code>
      */
-    DTU(1),
+    DTU(3),
     /**
-     * <code>CLOUD = 2;</code>
+     * <code>PLC = 4;</code>
      */
-    CLOUD(2),
+    PLC(4),
     ;
 
     /**
+     * <code>GEOMATIVE = 0;</code>
+     */
+    public static final int GEOMATIVE_VALUE = 0;
+    /**
+     * <code>CLOUD = 1;</code>
+     */
+    public static final int CLOUD_VALUE = 1;
+    /**
      * <pre>
      *主机名字缩写(需修改)
      * </pre>
      *
-     * <code>MACHINE = 0;</code>
+     * <code>MACHINE = 2;</code>
      */
-    public static final int MACHINE_VALUE = 0;
+    public static final int MACHINE_VALUE = 2;
     /**
-     * <code>DTU = 1;</code>
+     * <code>DTU = 3;</code>
      */
-    public static final int DTU_VALUE = 1;
+    public static final int DTU_VALUE = 3;
     /**
-     * <code>CLOUD = 2;</code>
+     * <code>PLC = 4;</code>
      */
-    public static final int CLOUD_VALUE = 2;
+    public static final int PLC_VALUE = 4;
 
 
     public final int getNumber() {
@@ -72,9 +88,11 @@ public final class STCommon {
 
     public static AddressType forNumber(int value) {
       switch (value) {
-        case 0: return MACHINE;
-        case 1: return DTU;
-        case 2: return CLOUD;
+        case 0: return GEOMATIVE;
+        case 1: return CLOUD;
+        case 2: return MACHINE;
+        case 3: return DTU;
+        case 4: return PLC;
         default: return null;
       }
     }
@@ -2782,7 +2800,7 @@ public final class STCommon {
      */
     public com.st.common.message.entity.STCommon.AddressType getDestType() {
       com.st.common.message.entity.STCommon.AddressType result = com.st.common.message.entity.STCommon.AddressType.valueOf(destType_);
-      return result == null ? com.st.common.message.entity.STCommon.AddressType.MACHINE : result;
+      return result == null ? com.st.common.message.entity.STCommon.AddressType.GEOMATIVE : result;
     }
 
     public static final int IDENTIFY_FIELD_NUMBER = 2;
@@ -3197,7 +3215,7 @@ public final class STCommon {
        */
       public com.st.common.message.entity.STCommon.AddressType getDestType() {
         com.st.common.message.entity.STCommon.AddressType result = com.st.common.message.entity.STCommon.AddressType.valueOf(destType_);
-        return result == null ? com.st.common.message.entity.STCommon.AddressType.MACHINE : result;
+        return result == null ? com.st.common.message.entity.STCommon.AddressType.GEOMATIVE : result;
       }
       /**
        * <pre>
@@ -3411,12 +3429,12 @@ public final class STCommon {
       "ddress\022\036\n\003src\030\006 \001(\0132\021.stcommon.Address\" " +
       "\n\014TransferType\022\007\n\003CON\020\000\022\007\n\003ACK\020\001\"D\n\007Addr" +
       "ess\022\'\n\010destType\030\001 \002(\0162\025.stcommon.Address",
-      "Type\022\020\n\010Identify\030\002 \002(\t*.\n\013AddressType\022\013\n" +
-      "\007MACHINE\020\000\022\007\n\003DTU\020\001\022\t\n\005CLOUD\020\002*]\n\007CmdCod" +
-      "e\022\021\n\rCMD_HeartBeat\020\000\022\022\n\016CMD_ForceLogin\020\001" +
-      "\022\023\n\017CMD_LoginRequet\020\002\022\026\n\021CMD_LoginRespon" +
-      "se\020\352\007B(\n\034com.st.common.message.entityB\010S" +
-      "TCommon"
+      "Type\022\020\n\010Identify\030\002 \002(\t*F\n\013AddressType\022\r\n" +
+      "\tGEOMATIVE\020\000\022\t\n\005CLOUD\020\001\022\013\n\007MACHINE\020\002\022\007\n\003" +
+      "DTU\020\003\022\007\n\003PLC\020\004*]\n\007CmdCode\022\021\n\rCMD_HeartBe" +
+      "at\020\000\022\022\n\016CMD_ForceLogin\020\001\022\023\n\017CMD_LoginReq" +
+      "uet\020\002\022\026\n\021CMD_LoginResponse\020\352\007B(\n\034com.st." +
+      "common.message.entityB\010STCommon"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
