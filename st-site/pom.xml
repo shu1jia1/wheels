@@ -31,10 +31,16 @@
 			<artifactId>netty-all</artifactId>
 			<version>4.1.6.FINAL</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>3.4.0</version>
 		</dependency>
 
 		<dependency>

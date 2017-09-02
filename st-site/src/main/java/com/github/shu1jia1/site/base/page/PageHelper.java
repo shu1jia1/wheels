@@ -62,13 +62,7 @@ public class PageHelper {
         if (!StringUtils.isEmpty(order)) {
             pageInfo.setOrder(order);
         }
-        //当已经执行过orderBy的时候
-        //尝试处理已经排序的情况，后来发现太复杂，且需要服务端保存状态，违背rest原则.放弃.---
-        //        PageInfo oldPage = getCurrentPage();
-        //        if (oldPage != null && oldPage.hasOrderBy()) {
-        //            page.setOrderBy(oldPage.getOrderBy());
-        //        }
-        logger.info("store pageinfo:" + pageInfo);
+        logger.info("save pageinfo:" + pageInfo);
         setCurrentPage(pageInfo);
         return true;
 

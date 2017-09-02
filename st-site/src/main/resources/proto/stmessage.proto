@@ -2,7 +2,7 @@ syntax = "proto2";
 
 package stcommon;
 
-option java_package = "com.st.common";
+option java_package = "com.st.common.message.entity";
 option java_outer_classname = "StMessage";
 
 //无内容

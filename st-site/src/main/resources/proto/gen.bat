@@ -1,1 +1,1 @@
-protoc -I=. --java_out=java --cpp_out=cpp stcommon.proto stmessage.proto
+protoc -I=. --java_out=../../java --cpp_out=cpp stcommon.proto stmessage.proto
