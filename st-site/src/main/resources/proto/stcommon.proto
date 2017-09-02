@@ -34,9 +34,11 @@ message Address{
 
 //
 enum AddressType {
-    MACHINE = 0;   //主机名字缩写(需修改)
-    DTU = 1;
-    CLOUD = 2;
+    GEOMATIVE = 0;
+    CLOUD = 1;
+    MACHINE = 2;   //主机名字缩写(需修改)
+    DTU = 3;
+    PLC = 4;
 }
 
 //标识消息名称和命令码之间关系
