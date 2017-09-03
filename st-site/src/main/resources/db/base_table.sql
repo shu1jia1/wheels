@@ -15,3 +15,10 @@ CREATE TABLE cm_geo_device (
   UNIQUE KEY `geo_dev` (`geoNo`,`devno`)
 ) ENGINE = INNODB ;
  
+
+insert into `cm_geo_device` (`geoNo`, `devno`) values('geo1','gd101');
+insert into `cm_geo_device` (`geoNo`, `devno`) values('geo1','gd102');
+insert into `cm_device` (`devno`, `name`, `devtype`, `ip`, `remarks`, `positionId`, `updateTime`) values('Gd101','Gd101','1',NULL,NULL,NULL,NULL);
+insert into `cm_device` (`devno`, `name`, `devtype`, `ip`, `remarks`, `positionId`, `updateTime`) values('Gd102','Gd103','1',NULL,NULL,NULL,NULL);
+insert into `cm_device` (`devno`, `name`, `devtype`, `ip`, `remarks`, `positionId`, `updateTime`) values('geo1','geo1','0',NULL,NULL,NULL,NULL);
+insert into `cm_device` (`devno`, `name`, `devtype`, `ip`, `remarks`, `positionId`, `updateTime`) values('geo2','geo2','0',NULL,NULL,NULL,NULL);

@@ -1,4 +1,4 @@
-package com.st.modules.device.mvc;
+package com.st.site.device.mvc;
 
 import java.util.List;
 

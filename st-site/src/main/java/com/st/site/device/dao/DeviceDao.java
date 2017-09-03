@@ -1,4 +1,4 @@
-package com.st.modules.device.dao;
+package com.st.site.device.dao;
 
 import java.util.List;
 

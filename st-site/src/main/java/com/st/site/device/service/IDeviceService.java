@@ -1,4 +1,4 @@
-package com.st.modules.device.service;
+package com.st.site.device.service;
 
 import java.util.List;
 

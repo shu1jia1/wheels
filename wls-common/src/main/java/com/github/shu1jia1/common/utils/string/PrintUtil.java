@@ -7,6 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.netty.buffer.ByteBuf;
+
 public final class PrintUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(PrintUtil.class);
@@ -68,7 +70,8 @@ public final class PrintUtil {
     private static String printBytes(byte[] inBytes, String format) {
         return toPrintBytes(inBytes, format, inBytes.length);
     }
-
+    
+    
     /**
      * 打印字节数组，使用format格式化单个byte (String.format(format, inBytes[i] & 0xff));
      * format = %02X 会打印HEX String

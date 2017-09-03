@@ -1,4 +1,4 @@
-package com.st.modules.device.entity;
+package com.st.site.device.entity;
 
 public class DeviceInfo {
     private String id;
