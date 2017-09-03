@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.st.modules.device.entity.DeviceInfo;
+import com.st.site.device.entity.DeviceInfo;
 
 public interface DeviceDao {
     public List<DeviceInfo> listDevice(@Param("geoNo")String genomativeID);

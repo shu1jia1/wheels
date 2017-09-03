@@ -7,6 +7,13 @@ import static com.google.common.base.Preconditions.*;
 
 import io.netty.buffer.ByteBuf;
 
+/**
+ * 包头解析
+ * <p>文件名称: CHeaderMessage.java/p>
+ * <p>文件描述: </p>
+ * @version 1.0
+ * @author  lov
+ */
 public class CHeaderMessage {
     byte[] tag = new byte[] { 0x55, (byte) 0xaa, 0x55, (byte) 0xaa };
     int pkgLength;// 2bytes;

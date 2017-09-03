@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.shu1jia1.common.exception.ErrorCodeException;
 import com.github.shu1jia1.site.base.entity.ResponseData;
-import com.st.modules.device.entity.DeviceInfo;
-import com.st.modules.device.service.IDeviceService;
+import com.st.site.device.entity.DeviceInfo;
+import com.st.site.device.service.IDeviceService;
 
 @Controller
 @RequestMapping("/device")

@@ -3,6 +3,8 @@ package com.st.common.message;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.MessageLite;
 import com.st.common.message.buidler.STProtoMessageBuilder;
+import com.st.common.message.entity.CHeaderMessage;
+import com.st.common.message.entity.STCommon.Address;
 import com.st.common.message.entity.STCommon.CmdCode;
 import com.st.common.message.entity.STCommon.MessageHeader;
 import com.st.common.message.entity.STCommon.STMessage;
@@ -11,8 +13,9 @@ public class STProtoMessage {
     private STMessage stMessage;
     private MessageHeader header;
     private byte[] payload;
+    private CHeaderMessage cmessage;
 
-    public static STProtoMessageBuilder newBuilder(){
+    public static STProtoMessageBuilder newBuilder() {
         return new STProtoMessageBuilder();
     }
 
@@ -38,8 +41,20 @@ public class STProtoMessage {
         }
     }
 
+    public STMessage getStMessage() {
+        return stMessage;
+    }
+
+    public void setStMessage(STMessage stMessage) {
+        this.stMessage = stMessage;
+    }
+
     public byte[] getBytes() {
         return stMessage.toByteArray();
+    }
+
+    public Address getDest() {
+        return header.getDest();
     }
 
 }

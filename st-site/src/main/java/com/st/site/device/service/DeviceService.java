@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.github.shu1jia1.common.utils.string.PrintUtil;
 import com.github.shu1jia1.site.base.entity.ResponseData;
 import com.github.shu1jia1.site.base.entity.builder.ResponseBuilder;
-import com.st.modules.device.dao.DeviceDao;
-import com.st.modules.device.entity.DeviceInfo;
+import com.st.site.device.dao.DeviceDao;
+import com.st.site.device.entity.DeviceInfo;
 
 @Service("deviceService")
 public class DeviceService implements IDeviceService, InitializingBean {
