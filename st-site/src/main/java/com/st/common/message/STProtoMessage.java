@@ -33,6 +33,7 @@ public class STProtoMessage {
         return getCmdCode() == CmdCode.CMD_HeartBeat;
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends MessageLite> T getInnerPayload(Class<T> clazz) {
         try {
             return (T) clazz.newInstance().getParserForType().parseFrom(payload);
