@@ -2,18 +2,16 @@ package com.st.modules.network.init;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.st.common.message.entity.STCommon.STMessage;
-import com.st.modules.message.MessageService;
+import com.st.modules.network.encoder.STMessageLengthFieldPrepender;
 import com.st.modules.network.handler.STMessageHandler;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.logging.LogLevel;
@@ -64,14 +62,16 @@ public class NettyChannelInitializer extends ChannelInitializer<Channel> {
         ChannelPipeline channelPipeline = channel.pipeline();
         channelPipeline.addLast(new LoggingHandler(LogLevel.INFO))
                 // .addLast("frameDecoder", new ProtobufVarint32FrameDecoder())
-                //.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 4))
+                // .addLast("frameDecoder", new
+                // LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 4))
                 .addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 4))
                 .addLast("pbDecoder", new ProtobufDecoder(STMessage.getDefaultInstance()))
                 // .addLast("frameEncode", new
                 // ProtobufVarint32LengthFieldPrepender())
-                .addLast("frameEncode", new LengthFieldPrepender(4)) //
-                .addLast("protobufEncode", new ProtobufEncoder()).addLast(sTMessageHandler);   //
-                //.addLast(new ReaderIdleHandler(60)).addLast(serverHandler);
+                .addLast("frameEncode", new STMessageLengthFieldPrepender()) //
+                // .addLast("frameEncode", new LengthFieldPrepender(4)) //
+                .addLast("protobufEncode", new ProtobufEncoder()).addLast(sTMessageHandler); //
+        // .addLast(new ReaderIdleHandler(60)).addLast(serverHandler);
         // switch (transferType) {
         //
         // case "websocket":

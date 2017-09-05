@@ -1,36 +1,25 @@
 package com.st.modules.network.handler;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonParseException;
-import com.st.common.message.entity.STCommon.STMessage;
+import com.st.common.message.STProtoMessage;
 import com.st.modules.device.DeviceChannels;
-import com.st.modules.login.LoginService;
+import com.st.modules.message.STMessageService;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.group.ChannelGroup;
-import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-import io.netty.util.concurrent.GlobalEventExecutor;
 
 //@Component
 //@Qualifier("websocketHandler")
 //@ChannelHandler.Sharable
 
 @Service("stMessageHandler")
-public class STMessageHandler extends SimpleChannelInboundHandler<STMessage> {
+public class STMessageHandler extends SimpleChannelInboundHandler<STProtoMessage> {
     private static final Logger logger = LoggerFactory.getLogger(STMessageHandler.class);
 
     // @Autowired
@@ -39,8 +28,11 @@ public class STMessageHandler extends SimpleChannelInboundHandler<STMessage> {
     // private LoginService loginService;
 
     @Autowired
-    DeviceChannels deviceChannels;
-    
+    private DeviceChannels deviceChannels;
+
+    @Resource(name = "stMessageService")
+    private STMessageService stMessageService;
+
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         // closed on shutdown.
@@ -49,9 +41,8 @@ public class STMessageHandler extends SimpleChannelInboundHandler<STMessage> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, STMessage msg) throws Exception {
-        // TODO Auto-generated method stub
-
+    protected void channelRead0(ChannelHandlerContext ctx, STProtoMessage msg) throws Exception {
+        stMessageService.handlerMessage(ctx.channel(), msg);
     }
 
     // @Override
@@ -97,6 +88,7 @@ public class STMessageHandler extends SimpleChannelInboundHandler<STMessage> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        logger.info(ctx.channel() + " error occoured. close.", cause);
         super.exceptionCaught(ctx, cause);
     }
 
