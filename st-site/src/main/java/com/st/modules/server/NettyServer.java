@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.st.modules.network.init.NettyChannelInitializer;
-import com.st.modules.network.repository.ChannelRepository;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -104,11 +103,6 @@ public class NettyServer implements InitializingBean {
 
     private InetSocketAddress tcpPort() {
         return new InetSocketAddress(tcpPort);
-    }
-
-    @Bean(name = "channelRepository")
-    public ChannelRepository channelRepository() {
-        return new ChannelRepository();
     }
 
 }
