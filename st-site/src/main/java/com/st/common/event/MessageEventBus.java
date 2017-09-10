@@ -9,4 +9,5 @@ public class MessageEventBus extends EventBus {
     public MessageEventBus() {
         super("STMessageEventBus");
     }
+
 }

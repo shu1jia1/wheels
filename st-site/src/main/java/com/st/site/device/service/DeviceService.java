@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.github.shu1jia1.common.utils.string.PrintUtil;
 import com.github.shu1jia1.site.base.entity.ResponseData;
 import com.github.shu1jia1.site.base.entity.builder.ResponseBuilder;
-import com.st.common.message.entity.StMessage.LoginRequet;
 import com.st.site.device.dao.DeviceDao;
 import com.st.site.device.entity.DeviceInfo;
 
@@ -31,22 +30,17 @@ public class DeviceService implements IDeviceService, InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         System.out.println(PrintUtil.toString(deviceDao.listDevice("geo1")));
-
     }
 
-    public boolean deviceLogIn(LoginRequet innerPayload, String ip) {
-        String devno = innerPayload.getDevno();
-        String version = innerPayload.getVersion();
-        int type = innerPayload.getType();
-        DeviceInfo device = new DeviceInfo(devno, type, version);
+    public boolean deviceLogIn(DeviceInfo device, String ip) {
         device.setIp(ip);
-        device.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-        device.setName(devno);
+        device.setCreateTime(new Timestamp(System.currentTimeMillis()));
         try {
             deviceDao.insertOrUpdate(device);
             return true;
         } catch (Exception e) {
             logger.info("device {} login failed", device);
+            logger.error("details:", e);
             return false;
         }
     }

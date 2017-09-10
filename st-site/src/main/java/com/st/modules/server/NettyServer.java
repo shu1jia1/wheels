@@ -8,10 +8,12 @@ import java.util.Set;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.st.modules.network.init.NettyChannelInitializer;
 import com.st.modules.network.repository.ChannelRepository;
@@ -24,13 +26,16 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
-@Component
-public class NettyServer {
-    @Autowired
+@Service("nettyServer")
+public class NettyServer implements InitializingBean {
+    private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
+
     private ServerBootstrap serverBootstrap;
-    @Autowired
-    private InetSocketAddress port;
-    @Resource(name = "somethingChannelInitializer")
+
+    //@Resource(name = "tcpSocketAddress")
+    private InetSocketAddress tcpSocketAddress;
+
+    @Resource(name = "nettyChannelInitializer")
     private NettyChannelInitializer nettyChannelInitializer;
 
     private Channel channel;
@@ -46,8 +51,18 @@ public class NettyServer {
     @Value("${so.backlog}")
     private int backlog;
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        this.serverBootstrap = bootstrap();
+        this.tcpSocketAddress = tcpPort();
+        start();
+        logger.info("tcp server at {} started ", tcpSocketAddress);
+    }
+
     public void start() throws Exception {
-        channel = serverBootstrap.bind(port).sync().channel().closeFuture().sync().channel();
+        channel = serverBootstrap.bind(new InetSocketAddress(tcpPort)).sync().channel();
+        // channel =
+        // serverBootstrap.bind(port).sync().channel().closeFuture().sync().channel();
     }
 
     @PreDestroy
@@ -64,9 +79,7 @@ public class NettyServer {
         return options;
     }
 
-    @SuppressWarnings("unchecked")
-    @Bean(name = "serverBootstrap")
-    public ServerBootstrap bootstrap() {
+    private ServerBootstrap bootstrap() {
         ServerBootstrap b = new ServerBootstrap();
         b.group(bossGroup(), workerGroup()).channel(NioServerSocketChannel.class)
                 .handler(new LoggingHandler(LogLevel.DEBUG)).childHandler(nettyChannelInitializer);
@@ -89,8 +102,7 @@ public class NettyServer {
         return new NioEventLoopGroup(workerCount);
     }
 
-    @Bean(name = "tcpSocketAddress")
-    public InetSocketAddress tcpPort() {
+    private InetSocketAddress tcpPort() {
         return new InetSocketAddress(tcpPort);
     }
 

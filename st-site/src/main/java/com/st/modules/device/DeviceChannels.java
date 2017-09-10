@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.st.common.message.entity.STCommon.Address;
 
@@ -16,6 +17,7 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
+@Service("deviceChannels")
 public class DeviceChannels {
     private static final Logger logger = LoggerFactory.getLogger(DeviceChannels.class);
 
@@ -42,8 +44,20 @@ public class DeviceChannels {
     }
 
     public Channel findChannel(Address address) {
-        String devno = address.getIdentify();
-        return allChannels.find(devChannelMap.get(devno));
+        String devNo = address.getIdentify();
+        ChannelId channelId = devChannelMap.get(devNo);
+        if (channelId == null) {
+            return null;
+        }
+        return allChannels.find(devChannelMap.get(devNo));
+    }
+
+    public Channel findChannel(String devNo) {
+        ChannelId channelId = devChannelMap.get(devNo);
+        if (channelId == null) {
+            return null;
+        }
+        return allChannels.find(channelId);
     }
 
     public Set<String> getAllOnlineDevice() {

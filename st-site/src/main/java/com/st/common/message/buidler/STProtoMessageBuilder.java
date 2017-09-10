@@ -1,11 +1,10 @@
 package com.st.common.message.buidler;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import org.apache.commons.lang.StringUtils;
 
 import com.github.shu1jia1.common.utils.id.IDGenerator;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.MessageLite;
 import com.st.common.message.STProtoMessage;
 import com.st.common.message.entity.STCommon.Address;
 import com.st.common.message.entity.STCommon.AddressType;
@@ -28,8 +27,21 @@ public class STProtoMessageBuilder {
     private String messageId;
     private String correlationId;
 
+    public STProtoMessageBuilder withRequestMessage(com.st.common.message.STProtoMessage request) {
+        this.correlationId = request.getCorrelationId();
+        this.dst = request.getSrc();
+        this.src = request.getDest();
+        return this;
+    }
+
     public STProtoMessageBuilder withPayload(byte[] payload) {
         this.payload = payload;
+        return this;
+    }
+
+    public STProtoMessageBuilder withPayload(MessageLite protoPayload) {
+        this.payload = protoPayload.toByteArray();
+        this.cmdCode = CmdCode.valueOf("CMD_" + protoPayload.getClass().getSimpleName());
         return this;
     }
 
@@ -58,13 +70,14 @@ public class STProtoMessageBuilder {
         return this;
     }
 
-    public void withCorrelationId(String correlationId) {
+    public STProtoMessageBuilder withCorrelationId(String correlationId) {
         this.correlationId = correlationId;
+        return this;
     }
 
     public STProtoMessage build() {
-        checkNotNull(cmdCode);
-        checkNotNull(dst);
+        // checkNotNull(cmdCode);
+        // checkNotNull(dst);
         MessageHeader.Builder headerBuilder = MessageHeader.newBuilder().setCmdCode(cmdCode).setMessageId(messageId);
         if (StringUtils.isEmpty(messageId)) {
             messageId = IDGenerator.getInstance().generate();
