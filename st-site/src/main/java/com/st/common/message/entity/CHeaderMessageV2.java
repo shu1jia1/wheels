@@ -11,6 +11,7 @@ import com.st.common.message.entity.STCommon.CmdCode;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.Unpooled;
 
 /**
  * 包头解析
@@ -36,6 +37,7 @@ public class CHeaderMessageV2 {
     private byte crc;
 
     private byte[] origBytes;
+    private int SrcType;
 
     public long getFlowNo() {
         return flowNo;
@@ -66,14 +68,57 @@ public class CHeaderMessageV2 {
         return this;
     }
 
-    public byte[] toBytes() throws MessageDecodeException {
-        if (origBytes != null && origBytes.length != 0) {
-            return origBytes;
-        }
+    public CHeaderMessageV2 makeResponse(boolean success, byte[] data) {
+        CHeaderMessageV2 resp = new CHeaderMessageV2();
+        resp.tag = Arrays.copyOf(tag, tag.length);
+        resp.flowNo = this.flowNo;
+        resp.src = Arrays.copyOf(this.dest, this.dest.length);
+        resp.dest = Arrays.copyOf(this.src, this.src.length);
+        resp.cmd = this.cmd;
+        resp.dataType = 0;// this.dataType;
+        resp.statusCode = (short) (success ? 0 : 1);
+        resp.pkgNum = this.pkgNum;
+        resp.reverse = Arrays.copyOf(this.reverse, this.reverse.length);
+        resp.data = data; // 低字节在前，高字节在后,不定
+        // resp.crc = bytebufer.readByte();
+        // 重算size
+        resp.pkgLength = resp.getCLength();
+        resp.build();
+        return resp;
+    }
+
+    private void build() {
         if (pkgLength == 0) {
-            throw new MessageDecodeException("pkgLength not set.");
+            // throw new MessageDecodeException("pkgLength not set.");
+            this.pkgLength = getCLength();
         }
-        return null;
+        ByteBuf bytebufer = Unpooled.buffer(this.pkgLength);
+        bytebufer.writeBytes(tag);
+        bytebufer.writeShort(pkgLength);
+        bytebufer.writeInt((int) (flowNo & 0xffffffff));
+        bytebufer.writeBytes(dest);
+        bytebufer.writeBytes(src);
+        bytebufer.writeByte(cmd);
+        bytebufer.writeByte(dataType);
+        bytebufer.writeByte(statusCode);
+        bytebufer.writeByte(pkgNum);
+        bytebufer.writeBytes(reverse);
+        bytebufer.writeBytes(data);
+        // crc
+        bytebufer.writeByte(0x01);
+        origBytes = new byte[pkgLength];
+        bytebufer.readBytes(origBytes);
+    }
+
+    private void resetCrc() {
+
+    }
+
+    public byte[] toBytes() throws MessageDecodeException {
+        if (origBytes == null || origBytes.length == 0) {
+            this.build();
+        }
+        return origBytes;
     }
 
     public int getCLength() {
@@ -213,6 +258,20 @@ public class CHeaderMessageV2 {
     public CmdCode getCmdCode() {
         CmdCode code = CmdCode.forNumber(cmd);
         return code;
+    }
+
+    public short getCmd() {
+        return cmd;
+    }
+
+    public int getSrcType() {
+        if (Arrays.equals(tag, COMMON_TAG)) {
+            return AddressType.MACHINE_VALUE;
+        }
+        if (Arrays.equals(tag, PLC_TAG)) {
+            return AddressType.PLC_VALUE;
+        }
+        return 0;
     }
 
 }

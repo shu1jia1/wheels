@@ -26,6 +26,7 @@ public class STProtoMessageBuilder {
     private Address dst;
     private String messageId;
     private String correlationId;
+    private Long flowNo;
 
     public STProtoMessageBuilder withRequestMessage(com.st.common.message.STProtoMessage request) {
         this.correlationId = request.getCorrelationId();
@@ -47,6 +48,11 @@ public class STProtoMessageBuilder {
 
     public STProtoMessageBuilder setCmdCode(CmdCode cmdCode) {
         this.cmdCode = cmdCode;
+        return this;
+    }   
+
+    public STProtoMessageBuilder setFlowNo(long flowNo) {
+        this.flowNo = flowNo;
         return this;
     }
 
@@ -80,7 +86,11 @@ public class STProtoMessageBuilder {
         // checkNotNull(dst);
         MessageHeader.Builder headerBuilder = MessageHeader.newBuilder().setCmdCode(cmdCode).setMessageId(messageId);
         if (StringUtils.isEmpty(messageId)) {
-            messageId = IDGenerator.getInstance().generate();
+            if (flowNo != null) {
+                messageId = dst.getIdentify() + "_" + flowNo;
+            } else {
+                messageId = IDGenerator.getInstance().generate();
+            }
         }
         headerBuilder.setCorrelationId(messageId);
         if (StringUtils.isNotEmpty(correlationId)) {

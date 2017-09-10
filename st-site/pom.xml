@@ -24,6 +24,12 @@
 			<groupId>com.github.shu1jia1</groupId>
 			<artifactId>wls-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.activemq</groupId>
+					<artifactId>activemq-all</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>

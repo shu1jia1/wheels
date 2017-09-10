@@ -4,6 +4,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.MessageLite;
 import com.st.common.message.buidler.STProtoMessageBuilder;
 import com.st.common.message.entity.CHeaderMessage;
+import com.st.common.message.entity.CHeaderMessageV2;
 import com.st.common.message.entity.STCommon.Address;
 import com.st.common.message.entity.STCommon.CmdCode;
 import com.st.common.message.entity.STCommon.MessageHeader;
@@ -13,7 +14,7 @@ public class STProtoMessage {
     private STMessage stMessage;
     private MessageHeader header;
     private byte[] payload;
-    private CHeaderMessage cmessage;
+    private CHeaderMessageV2 cmessage;
 
     public static STProtoMessageBuilder newBuilder() {
         return new STProtoMessageBuilder();
@@ -27,6 +28,10 @@ public class STProtoMessage {
 
     public CmdCode getCmdCode() {
         return header.getCmdCode();
+    }
+
+    public String getCorrelationId() {
+        return header.getCorrelationId();
     }
 
     public boolean isHeartBeat() {
@@ -56,6 +61,17 @@ public class STProtoMessage {
 
     public Address getDest() {
         return header.getDest();
+    }
+
+    public Address getSrc() {
+        return header.getSrc();
+    }
+
+    public String getSimpleInfo() {
+        if (stMessage != null) {
+            return stMessage.getHeader().toString();
+        }
+        return null;
     }
 
 }

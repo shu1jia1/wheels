@@ -1,9 +1,14 @@
 package com.st.modules.network.decoder;
 
 import java.nio.ByteOrder;
+import java.util.Arrays;
 import java.util.List;
 
+import com.github.shu1jia1.common.exception.MessageDecodeException;
+import com.st.common.message.entity.CHeaderMessageV2;
+
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.CorruptedFrameException;
@@ -11,7 +16,7 @@ import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.TooLongFrameException;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 
-public class LengthFieldBasedFrameDecoder extends ByteToMessageDecoder {
+public class STMessageFrameDecoder extends ByteToMessageDecoder {
 
     private final ByteOrder byteOrder;
     private final int maxFrameLength;
@@ -37,7 +42,7 @@ public class LengthFieldBasedFrameDecoder extends ByteToMessageDecoder {
      * @param lengthFieldLength
      *        the length of the length field
      */
-    public LengthFieldBasedFrameDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength) {
+    public STMessageFrameDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength) {
         this(maxFrameLength, lengthFieldOffset, lengthFieldLength, 0, 0);
     }
 
@@ -57,8 +62,8 @@ public class LengthFieldBasedFrameDecoder extends ByteToMessageDecoder {
      * @param initialBytesToStrip
      *        the number of first bytes to strip out from the decoded frame
      */
-    public LengthFieldBasedFrameDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength,
-            int lengthAdjustment, int initialBytesToStrip) {
+    public STMessageFrameDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment,
+            int initialBytesToStrip) {
         this(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip, true);
     }
 
@@ -85,8 +90,8 @@ public class LengthFieldBasedFrameDecoder extends ByteToMessageDecoder {
      *        is thrown after the entire frame that exceeds <tt>maxFrameLength</tt>
      *        has been read.
      */
-    public LengthFieldBasedFrameDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength,
-            int lengthAdjustment, int initialBytesToStrip, boolean failFast) {
+    public STMessageFrameDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment,
+            int initialBytesToStrip, boolean failFast) {
         this(ByteOrder.BIG_ENDIAN, maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment,
                 initialBytesToStrip, failFast);
     }
@@ -116,8 +121,8 @@ public class LengthFieldBasedFrameDecoder extends ByteToMessageDecoder {
      *        is thrown after the entire frame that exceeds <tt>maxFrameLength</tt>
      *        has been read.
      */
-    public LengthFieldBasedFrameDecoder(ByteOrder byteOrder, int maxFrameLength, int lengthFieldOffset,
-            int lengthFieldLength, int lengthAdjustment, int initialBytesToStrip, boolean failFast) {
+    public STMessageFrameDecoder(ByteOrder byteOrder, int maxFrameLength, int lengthFieldOffset, int lengthFieldLength,
+            int lengthAdjustment, int initialBytesToStrip, boolean failFast) {
         if (byteOrder == null) {
             throw new NullPointerException("byteOrder");
         }
@@ -154,6 +159,15 @@ public class LengthFieldBasedFrameDecoder extends ByteToMessageDecoder {
 
     @Override
     protected final void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        in.markReaderIndex();
+        byte[] tagBytes = new byte[4];
+        in.readBytes(tagBytes);
+        in.resetReaderIndex();
+        // check header
+        if (!Arrays.equals(tagBytes, CHeaderMessageV2.COMMON_TAG)
+                && !Arrays.equals(tagBytes, CHeaderMessageV2.PLC_TAG)) {
+            throw new DecoderException(ctx.channel() + " bytes tag unmatch, content:" + ByteBufUtil.hexDump(in));
+        }
         Object decoded = decode(ctx, in);
         if (decoded != null) {
             out.add(decoded);

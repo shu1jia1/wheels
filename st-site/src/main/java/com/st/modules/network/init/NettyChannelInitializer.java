@@ -2,18 +2,18 @@ package com.st.modules.network.init;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.st.common.message.entity.STCommon.STMessage;
-import com.st.modules.network.encoder.STMessageLengthFieldPrepender;
+import com.st.modules.network.decoder.STCMessageDecoder;
+import com.st.modules.network.decoder.STMessageFrameDecoder;
+import com.st.modules.network.encoder.CMessageEncoder;
+import com.st.modules.network.handler.CHeaderMessageHandler;
 import com.st.modules.network.handler.STMessageHandler;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -36,10 +36,15 @@ public class NettyChannelInitializer extends ChannelInitializer<Channel> {
     // @Value("${netty.server.transfer.websocket.allowExtensions}")
     // private boolean transferWebsocketAllowExtensions;
     // @Value("${netty.server.log.level.pipeline}")
+    @Value("${tcp.log.level}")
     private String logLevelPipeline = LogLevel.INFO.toString();
+    //
+    // @Resource(name = "stMessageHandler")
+    // STMessageHandler sTMessageHandler;
+    //
 
-    @Resource(name = "stMessageHandler")
-    STMessageHandler sTMessageHandler;
+    @Resource(name = "cMessageHandler")
+    private CHeaderMessageHandler cMessageHandler;
     //
     // @Autowired
     // @Qualifier("websocketHandler")
@@ -60,17 +65,22 @@ public class NettyChannelInitializer extends ChannelInitializer<Channel> {
     protected void initChannel(Channel channel) throws Exception {
 
         ChannelPipeline channelPipeline = channel.pipeline();
-        channelPipeline.addLast(new LoggingHandler(LogLevel.INFO))
-                // .addLast("frameDecoder", new ProtobufVarint32FrameDecoder())
-                // .addLast("frameDecoder", new
-                // LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 4))
-                .addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 4))
-                .addLast("pbDecoder", new ProtobufDecoder(STMessage.getDefaultInstance()))
-                // .addLast("frameEncode", new
-                // ProtobufVarint32LengthFieldPrepender())
-                .addLast("frameEncode", new STMessageLengthFieldPrepender()) //
-                // .addLast("frameEncode", new LengthFieldPrepender(4)) //
-                .addLast("protobufEncode", new ProtobufEncoder()).addLast(sTMessageHandler); //
+        channelPipeline.addLast(new LoggingHandler(LogLevel.valueOf(logLevelPipeline)))
+                .addLast("frameDecoder", new STMessageFrameDecoder(65536, 4, 2, -6, 0)) //长度开始为4,长度2字节,长度因为算在了总数里，需要去掉
+                .addLast("cDecoder", new STCMessageDecoder()) //
+                .addLast("cEncode", new CMessageEncoder())//
+                .addLast(cMessageHandler); //
+
+        // .addLast("frameDecoder", new ProtobufVarint32FrameDecoder())
+        // .addLast("frameDecoder", new
+        // LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 4))
+        // .addLast("pbDecoder", new
+        // ProtobufDecoder(STMessage.getDefaultInstance()))
+        // .addLast("frameEncode", new ProtobufVarint32LengthFieldPrepender())
+        // .addLast("frameEncode", new STMessageLengthFieldPrepender()) //
+        // .addLast("frameEncode", new LengthFieldPrepender(4)) //
+        // .addLast("protobufEncode", new
+        // ProtobufEncoder()).addLast(sTMessageHandler); //
         // .addLast(new ReaderIdleHandler(60)).addLast(serverHandler);
         // switch (transferType) {
         //

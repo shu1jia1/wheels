@@ -21,7 +21,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 @Service("stMessageHandler")
 public class STMessageHandler extends SimpleChannelInboundHandler<STProtoMessage> {
     private static final Logger logger = LoggerFactory.getLogger(STMessageHandler.class);
-
+    
     // @Autowired
     // private MessageService messageService;
     // @Autowired

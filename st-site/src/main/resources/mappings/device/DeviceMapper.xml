@@ -15,7 +15,7 @@
 		VALUES
 		(#{devNo},#{devType},#{name},#{devVer},#{ip},#{remarks},#{positionId},#{createTime})
 			ON DUPLICATE KEY UPDATE
-		NAME= #{name}, devtype=#{devType}, devVer=,#{devVer} ,ip= #{ip} ,remarks = #{remarks} ,positionId =#{positionId} ,updateTime = #{createTime}
+		NAME= #{name}, devtype=#{devType}, devVer=#{devVer} ,ip= #{ip} ,remarks = #{remarks} ,positionId =#{positionId} ,updateTime = #{createTime}
     </insert>
 	
 			
