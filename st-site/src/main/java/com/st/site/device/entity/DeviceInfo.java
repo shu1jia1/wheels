@@ -2,6 +2,9 @@ package com.st.site.device.entity;
 
 import java.sql.Timestamp;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+
 public class DeviceInfo {
     // private String id;
     private String devNo;
@@ -35,6 +38,20 @@ public class DeviceInfo {
 
     public String getDevNo() {
         return devNo;
+    }
+
+    public byte[] getDevNoBytes() throws DecoderException {
+        byte[] result = new byte[4];
+        if (org.apache.commons.lang.StringUtils.isEmpty(devNo)) {
+            return result;
+        }
+        byte[] data = Hex.decodeHex(devNo.toCharArray());
+        if (data.length > 4) {
+            System.arraycopy(data, data.length - 4, result, 0, 4);
+            return result;
+        }
+        return data;
+
     }
 
     public String getDevVer() {
@@ -72,7 +89,7 @@ public class DeviceInfo {
     public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
-    
+
     public Timestamp getCreateTime() {
         return createTime;
     }
