@@ -28,27 +28,31 @@ message MessageHeader{
 
 //地址
 message Address{
-    required AddressType destType  = 1;  //标志设备类型 注:如果能接受字符串的话，就使用设备缩写，不能就用int
+    required AddressType addrType  = 1;  //标志设备类型 注:如果能接受字符串的话，就使用设备缩写，不能就用int
     required string Identify = 2;   //设备唯一标志,可以填设备devno
 }
 
 //
+//设备类型，0x1为云端，0x2为Geomative, 0x3为GD10,0x4为PLC
 enum AddressType {
-    GEOMATIVE = 0;
+    ALL = 0 ; //广播时使用
     CLOUD = 1;
-    MACHINE = 2;   //主机名字缩写(需修改)
-    DTU = 3;
+    GEOMATIVE = 2;
+    GD10 = 3;   //主机名字缩写(需修改)
     PLC = 4;
+    DTU = 5;
+    
 }
 
 //标识消息名称和命令码之间关系
 enum CmdCode{
-    CMD_HeartBeat = 0; //心跳
+    CMD_HeartBeat = 255; //心跳
 
-    CMD_ForceLogin = 1;
+    CMD_ForceLogin = 0; //要求设备登陆
 
-    CMD_LoginRequet = 2; //登陆
-    CMD_LoginResponse = 1002; //登陆回应
+    CMD_LoginRequet = 2; //设备登陆
+    CMD_LoginResponse = 102; // 设备登陆回应
+    
 
     //注:获取设备列表的接口不在tcp通道上
     //ListDeviceRequest = 3;

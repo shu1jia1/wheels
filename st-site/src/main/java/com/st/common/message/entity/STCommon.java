@@ -16,6 +16,7 @@ public final class STCommon {
   }
   /**
    * <pre>
+   *设备类型，0x1为云端，0x2为Geomative, 0x3为GD10,0x4为PLC
    * </pre>
    *
    * Protobuf enum {@code stcommon.AddressType}
@@ -23,55 +24,71 @@ public final class STCommon {
   public enum AddressType
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
-     * <code>GEOMATIVE = 0;</code>
+     * <pre>
+     *广播时使用
+     * </pre>
+     *
+     * <code>ALL = 0;</code>
      */
-    GEOMATIVE(0),
+    ALL(0),
     /**
      * <code>CLOUD = 1;</code>
      */
     CLOUD(1),
     /**
+     * <code>GEOMATIVE = 2;</code>
+     */
+    GEOMATIVE(2),
+    /**
      * <pre>
      *主机名字缩写(需修改)
      * </pre>
      *
-     * <code>MACHINE = 2;</code>
+     * <code>GD10 = 3;</code>
      */
-    MACHINE(2),
-    /**
-     * <code>DTU = 3;</code>
-     */
-    DTU(3),
+    GD10(3),
     /**
      * <code>PLC = 4;</code>
      */
     PLC(4),
+    /**
+     * <code>DTU = 5;</code>
+     */
+    DTU(5),
     ;
 
     /**
-     * <code>GEOMATIVE = 0;</code>
+     * <pre>
+     *广播时使用
+     * </pre>
+     *
+     * <code>ALL = 0;</code>
      */
-    public static final int GEOMATIVE_VALUE = 0;
+    public static final int ALL_VALUE = 0;
     /**
      * <code>CLOUD = 1;</code>
      */
     public static final int CLOUD_VALUE = 1;
     /**
+     * <code>GEOMATIVE = 2;</code>
+     */
+    public static final int GEOMATIVE_VALUE = 2;
+    /**
      * <pre>
      *主机名字缩写(需修改)
      * </pre>
      *
-     * <code>MACHINE = 2;</code>
+     * <code>GD10 = 3;</code>
      */
-    public static final int MACHINE_VALUE = 2;
-    /**
-     * <code>DTU = 3;</code>
-     */
-    public static final int DTU_VALUE = 3;
+    public static final int GD10_VALUE = 3;
     /**
      * <code>PLC = 4;</code>
      */
     public static final int PLC_VALUE = 4;
+    /**
+     * <code>DTU = 5;</code>
+     */
+    public static final int DTU_VALUE = 5;
 
 
     public final int getNumber() {
@@ -88,11 +105,12 @@ public final class STCommon {
 
     public static AddressType forNumber(int value) {
       switch (value) {
-        case 0: return GEOMATIVE;
+        case 0: return ALL;
         case 1: return CLOUD;
-        case 2: return MACHINE;
-        case 3: return DTU;
+        case 2: return GEOMATIVE;
+        case 3: return GD10;
         case 4: return PLC;
+        case 5: return DTU;
         default: return null;
       }
     }
@@ -156,16 +174,20 @@ public final class STCommon {
      *心跳
      * </pre>
      *
-     * <code>CMD_HeartBeat = 0;</code>
+     * <code>CMD_HeartBeat = 255;</code>
      */
-    CMD_HeartBeat(0),
-    /**
-     * <code>CMD_ForceLogin = 1;</code>
-     */
-    CMD_ForceLogin(1),
+    CMD_HeartBeat(255),
     /**
      * <pre>
-     *登陆
+     *要求设备登陆
+     * </pre>
+     *
+     * <code>CMD_ForceLogin = 0;</code>
+     */
+    CMD_ForceLogin(0),
+    /**
+     * <pre>
+     *设备登陆
      * </pre>
      *
      * <code>CMD_LoginRequet = 2;</code>
@@ -173,12 +195,12 @@ public final class STCommon {
     CMD_LoginRequet(2),
     /**
      * <pre>
-     *登陆回应
+     * 设备登陆回应
      * </pre>
      *
-     * <code>CMD_LoginResponse = 1002;</code>
+     * <code>CMD_LoginResponse = 102;</code>
      */
-    CMD_LoginResponse(1002),
+    CMD_LoginResponse(102),
     ;
 
     /**
@@ -186,16 +208,20 @@ public final class STCommon {
      *心跳
      * </pre>
      *
-     * <code>CMD_HeartBeat = 0;</code>
+     * <code>CMD_HeartBeat = 255;</code>
      */
-    public static final int CMD_HeartBeat_VALUE = 0;
-    /**
-     * <code>CMD_ForceLogin = 1;</code>
-     */
-    public static final int CMD_ForceLogin_VALUE = 1;
+    public static final int CMD_HeartBeat_VALUE = 255;
     /**
      * <pre>
-     *登陆
+     *要求设备登陆
+     * </pre>
+     *
+     * <code>CMD_ForceLogin = 0;</code>
+     */
+    public static final int CMD_ForceLogin_VALUE = 0;
+    /**
+     * <pre>
+     *设备登陆
      * </pre>
      *
      * <code>CMD_LoginRequet = 2;</code>
@@ -203,12 +229,12 @@ public final class STCommon {
     public static final int CMD_LoginRequet_VALUE = 2;
     /**
      * <pre>
-     *登陆回应
+     * 设备登陆回应
      * </pre>
      *
-     * <code>CMD_LoginResponse = 1002;</code>
+     * <code>CMD_LoginResponse = 102;</code>
      */
-    public static final int CMD_LoginResponse_VALUE = 1002;
+    public static final int CMD_LoginResponse_VALUE = 102;
 
 
     public final int getNumber() {
@@ -225,10 +251,10 @@ public final class STCommon {
 
     public static CmdCode forNumber(int value) {
       switch (value) {
-        case 0: return CMD_HeartBeat;
-        case 1: return CMD_ForceLogin;
+        case 255: return CMD_HeartBeat;
+        case 0: return CMD_ForceLogin;
         case 2: return CMD_LoginRequet;
-        case 1002: return CMD_LoginResponse;
+        case 102: return CMD_LoginResponse;
         default: return null;
       }
     }
@@ -1147,7 +1173,7 @@ public final class STCommon {
       messageId_ = "";
       correlationId_ = "";
       transferType_ = 0;
-      cmdCode_ = 0;
+      cmdCode_ = 255;
     }
 
     @java.lang.Override
@@ -1851,7 +1877,7 @@ public final class STCommon {
         bitField0_ = (bitField0_ & ~0x00000002);
         transferType_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
-        cmdCode_ = 0;
+        cmdCode_ = 255;
         bitField0_ = (bitField0_ & ~0x00000008);
         if (destBuilder_ == null) {
           dest_ = null;
@@ -2233,7 +2259,7 @@ public final class STCommon {
         return this;
       }
 
-      private int cmdCode_ = 0;
+      private int cmdCode_ = 255;
       /**
        * <pre>
        * 命令码
@@ -2280,7 +2306,7 @@ public final class STCommon {
        */
       public Builder clearCmdCode() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        cmdCode_ = 0;
+        cmdCode_ = 255;
         onChanged();
         return this;
       }
@@ -2650,17 +2676,17 @@ public final class STCommon {
      *标志设备类型 注:如果能接受字符串的话，就使用设备缩写，不能就用int
      * </pre>
      *
-     * <code>required .stcommon.AddressType destType = 1;</code>
+     * <code>required .stcommon.AddressType addrType = 1;</code>
      */
-    boolean hasDestType();
+    boolean hasAddrType();
     /**
      * <pre>
      *标志设备类型 注:如果能接受字符串的话，就使用设备缩写，不能就用int
      * </pre>
      *
-     * <code>required .stcommon.AddressType destType = 1;</code>
+     * <code>required .stcommon.AddressType addrType = 1;</code>
      */
-    com.st.common.message.entity.STCommon.AddressType getDestType();
+    com.st.common.message.entity.STCommon.AddressType getAddrType();
 
     /**
      * <pre>
@@ -2705,7 +2731,7 @@ public final class STCommon {
       super(builder);
     }
     private Address() {
-      destType_ = 0;
+      addrType_ = 0;
       identify_ = "";
     }
 
@@ -2744,7 +2770,7 @@ public final class STCommon {
                 unknownFields.mergeVarintField(1, rawValue);
               } else {
                 bitField0_ |= 0x00000001;
-                destType_ = rawValue;
+                addrType_ = rawValue;
               }
               break;
             }
@@ -2779,16 +2805,16 @@ public final class STCommon {
     }
 
     private int bitField0_;
-    public static final int DESTTYPE_FIELD_NUMBER = 1;
-    private int destType_;
+    public static final int ADDRTYPE_FIELD_NUMBER = 1;
+    private int addrType_;
     /**
      * <pre>
      *标志设备类型 注:如果能接受字符串的话，就使用设备缩写，不能就用int
      * </pre>
      *
-     * <code>required .stcommon.AddressType destType = 1;</code>
+     * <code>required .stcommon.AddressType addrType = 1;</code>
      */
-    public boolean hasDestType() {
+    public boolean hasAddrType() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
@@ -2796,11 +2822,11 @@ public final class STCommon {
      *标志设备类型 注:如果能接受字符串的话，就使用设备缩写，不能就用int
      * </pre>
      *
-     * <code>required .stcommon.AddressType destType = 1;</code>
+     * <code>required .stcommon.AddressType addrType = 1;</code>
      */
-    public com.st.common.message.entity.STCommon.AddressType getDestType() {
-      com.st.common.message.entity.STCommon.AddressType result = com.st.common.message.entity.STCommon.AddressType.valueOf(destType_);
-      return result == null ? com.st.common.message.entity.STCommon.AddressType.GEOMATIVE : result;
+    public com.st.common.message.entity.STCommon.AddressType getAddrType() {
+      com.st.common.message.entity.STCommon.AddressType result = com.st.common.message.entity.STCommon.AddressType.valueOf(addrType_);
+      return result == null ? com.st.common.message.entity.STCommon.AddressType.ALL : result;
     }
 
     public static final int IDENTIFY_FIELD_NUMBER = 2;
@@ -2863,7 +2889,7 @@ public final class STCommon {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasDestType()) {
+      if (!hasAddrType()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -2878,7 +2904,7 @@ public final class STCommon {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeEnum(1, destType_);
+        output.writeEnum(1, addrType_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, identify_);
@@ -2893,7 +2919,7 @@ public final class STCommon {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(1, destType_);
+          .computeEnumSize(1, addrType_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, identify_);
@@ -2914,9 +2940,9 @@ public final class STCommon {
       com.st.common.message.entity.STCommon.Address other = (com.st.common.message.entity.STCommon.Address) obj;
 
       boolean result = true;
-      result = result && (hasDestType() == other.hasDestType());
-      if (hasDestType()) {
-        result = result && destType_ == other.destType_;
+      result = result && (hasAddrType() == other.hasAddrType());
+      if (hasAddrType()) {
+        result = result && addrType_ == other.addrType_;
       }
       result = result && (hasIdentify() == other.hasIdentify());
       if (hasIdentify()) {
@@ -2934,9 +2960,9 @@ public final class STCommon {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasDestType()) {
-        hash = (37 * hash) + DESTTYPE_FIELD_NUMBER;
-        hash = (53 * hash) + destType_;
+      if (hasAddrType()) {
+        hash = (37 * hash) + ADDRTYPE_FIELD_NUMBER;
+        hash = (53 * hash) + addrType_;
       }
       if (hasIdentify()) {
         hash = (37 * hash) + IDENTIFY_FIELD_NUMBER;
@@ -3075,7 +3101,7 @@ public final class STCommon {
       }
       public Builder clear() {
         super.clear();
-        destType_ = 0;
+        addrType_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
         identify_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -3106,7 +3132,7 @@ public final class STCommon {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.destType_ = destType_;
+        result.addrType_ = addrType_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
@@ -3153,8 +3179,8 @@ public final class STCommon {
 
       public Builder mergeFrom(com.st.common.message.entity.STCommon.Address other) {
         if (other == com.st.common.message.entity.STCommon.Address.getDefaultInstance()) return this;
-        if (other.hasDestType()) {
-          setDestType(other.getDestType());
+        if (other.hasAddrType()) {
+          setAddrType(other.getAddrType());
         }
         if (other.hasIdentify()) {
           bitField0_ |= 0x00000002;
@@ -3167,7 +3193,7 @@ public final class STCommon {
       }
 
       public final boolean isInitialized() {
-        if (!hasDestType()) {
+        if (!hasAddrType()) {
           return false;
         }
         if (!hasIdentify()) {
@@ -3195,15 +3221,15 @@ public final class STCommon {
       }
       private int bitField0_;
 
-      private int destType_ = 0;
+      private int addrType_ = 0;
       /**
        * <pre>
        *标志设备类型 注:如果能接受字符串的话，就使用设备缩写，不能就用int
        * </pre>
        *
-       * <code>required .stcommon.AddressType destType = 1;</code>
+       * <code>required .stcommon.AddressType addrType = 1;</code>
        */
-      public boolean hasDestType() {
+      public boolean hasAddrType() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
@@ -3211,25 +3237,25 @@ public final class STCommon {
        *标志设备类型 注:如果能接受字符串的话，就使用设备缩写，不能就用int
        * </pre>
        *
-       * <code>required .stcommon.AddressType destType = 1;</code>
+       * <code>required .stcommon.AddressType addrType = 1;</code>
        */
-      public com.st.common.message.entity.STCommon.AddressType getDestType() {
-        com.st.common.message.entity.STCommon.AddressType result = com.st.common.message.entity.STCommon.AddressType.valueOf(destType_);
-        return result == null ? com.st.common.message.entity.STCommon.AddressType.GEOMATIVE : result;
+      public com.st.common.message.entity.STCommon.AddressType getAddrType() {
+        com.st.common.message.entity.STCommon.AddressType result = com.st.common.message.entity.STCommon.AddressType.valueOf(addrType_);
+        return result == null ? com.st.common.message.entity.STCommon.AddressType.ALL : result;
       }
       /**
        * <pre>
        *标志设备类型 注:如果能接受字符串的话，就使用设备缩写，不能就用int
        * </pre>
        *
-       * <code>required .stcommon.AddressType destType = 1;</code>
+       * <code>required .stcommon.AddressType addrType = 1;</code>
        */
-      public Builder setDestType(com.st.common.message.entity.STCommon.AddressType value) {
+      public Builder setAddrType(com.st.common.message.entity.STCommon.AddressType value) {
         if (value == null) {
           throw new NullPointerException();
         }
         bitField0_ |= 0x00000001;
-        destType_ = value.getNumber();
+        addrType_ = value.getNumber();
         onChanged();
         return this;
       }
@@ -3238,11 +3264,11 @@ public final class STCommon {
        *标志设备类型 注:如果能接受字符串的话，就使用设备缩写，不能就用int
        * </pre>
        *
-       * <code>required .stcommon.AddressType destType = 1;</code>
+       * <code>required .stcommon.AddressType addrType = 1;</code>
        */
-      public Builder clearDestType() {
+      public Builder clearAddrType() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        destType_ = 0;
+        addrType_ = 0;
         onChanged();
         return this;
       }
@@ -3428,13 +3454,13 @@ public final class STCommon {
       "ommon.CmdCode\022\037\n\004dest\030\005 \001(\0132\021.stcommon.A" +
       "ddress\022\036\n\003src\030\006 \001(\0132\021.stcommon.Address\" " +
       "\n\014TransferType\022\007\n\003CON\020\000\022\007\n\003ACK\020\001\"D\n\007Addr" +
-      "ess\022\'\n\010destType\030\001 \002(\0162\025.stcommon.Address",
-      "Type\022\020\n\010Identify\030\002 \002(\t*F\n\013AddressType\022\r\n" +
-      "\tGEOMATIVE\020\000\022\t\n\005CLOUD\020\001\022\013\n\007MACHINE\020\002\022\007\n\003" +
-      "DTU\020\003\022\007\n\003PLC\020\004*]\n\007CmdCode\022\021\n\rCMD_HeartBe" +
-      "at\020\000\022\022\n\016CMD_ForceLogin\020\001\022\023\n\017CMD_LoginReq" +
-      "uet\020\002\022\026\n\021CMD_LoginResponse\020\352\007B(\n\034com.st." +
-      "common.message.entityB\010STCommon"
+      "ess\022\'\n\010addrType\030\001 \002(\0162\025.stcommon.Address",
+      "Type\022\020\n\010Identify\030\002 \002(\t*L\n\013AddressType\022\007\n" +
+      "\003ALL\020\000\022\t\n\005CLOUD\020\001\022\r\n\tGEOMATIVE\020\002\022\010\n\004GD10" +
+      "\020\003\022\007\n\003PLC\020\004\022\007\n\003DTU\020\005*]\n\007CmdCode\022\022\n\rCMD_H" +
+      "eartBeat\020\377\001\022\022\n\016CMD_ForceLogin\020\000\022\023\n\017CMD_L" +
+      "oginRequet\020\002\022\025\n\021CMD_LoginResponse\020fB(\n\034c" +
+      "om.st.common.message.entityB\010STCommon"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3465,7 +3491,7 @@ public final class STCommon {
     internal_static_stcommon_Address_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_stcommon_Address_descriptor,
-        new java.lang.String[] { "DestType", "Identify", });
+        new java.lang.String[] { "AddrType", "Identify", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

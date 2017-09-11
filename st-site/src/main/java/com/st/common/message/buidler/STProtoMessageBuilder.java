@@ -67,7 +67,7 @@ public class STProtoMessageBuilder {
     }
 
     public STProtoMessageBuilder withMachineDst(String machineId) {
-        this.dst = Address.newBuilder().setDestType(AddressType.MACHINE).setIdentify(machineId).build();
+        this.dst = Address.newBuilder().setAddrType(AddressType.GD10).setIdentify(machineId).build();
         return this;
     }
 
@@ -100,7 +100,7 @@ public class STProtoMessageBuilder {
         }
 
         if (src == null) {
-            src = Address.newBuilder().setDestType(AddressType.CLOUD).setIdentify("01").build();
+            src = Address.newBuilder().setAddrType(AddressType.CLOUD).setIdentify("01").build();
         }
 
         headerBuilder.setDest(dst).setSrc(src);

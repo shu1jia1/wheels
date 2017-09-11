@@ -21,13 +21,22 @@ public class HeartBeatEventHandler {
     private DeviceService deviceService;
 
     @Subscribe
-    public void handlerHeartBeat(HeartbeatReceiveEvent heartEvent) {
+    public void handlerHeartBeat(final HeartbeatReceiveEvent heartEvent) {
         // STProtoMessage msg = heartEvent.getStMessage();
         // Address src = msg.getSrc();
-        CHeaderMessageV2 loginMessage = heartEvent.getcMessage();
-        String devno = loginMessage.getSrcStr();
+        final CHeaderMessageV2 heartBeatMessage = heartEvent.getcMessage();
+        String devno = heartBeatMessage.getSrcStr();
         SocketAddress remoteAddr = heartEvent.getChannel().remoteAddress();
-        logger.info("recevie {} heart beat from {}", devno, remoteAddr);
+        logger.info("recevie {} heart beat from {}", heartBeatMessage.getSrcAddr(), remoteAddr);
+
+        heartEvent.getChannel().eventLoop().execute(new Runnable() {
+            @Override
+            public void run() {
+                // 心跳包回应0x00
+                heartEvent.getChannel().writeAndFlush(heartBeatMessage.makeResponse(true, new byte[] { 0x00 }));
+            }
+        });
+
     }
 
 }

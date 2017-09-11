@@ -8,20 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.st.common.message.STProtoMessage;
+import com.st.common.message.entity.CHeaderMessageV2;
 import com.st.modules.device.DeviceChannels;
 import com.st.modules.message.STMessageService;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.ChannelHandler.Sharable;
 
 //@Component
 //@Qualifier("websocketHandler")
 //@ChannelHandler.Sharable
 
 @Service("stMessageHandler")
+@Sharable
 public class STMessageHandler extends SimpleChannelInboundHandler<STProtoMessage> {
     private static final Logger logger = LoggerFactory.getLogger(STMessageHandler.class);
-    
+
     // @Autowired
     // private MessageService messageService;
     // @Autowired
@@ -34,9 +37,16 @@ public class STMessageHandler extends SimpleChannelInboundHandler<STProtoMessage
     private STMessageService stMessageService;
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
         // closed on shutdown.
         deviceChannels.add(ctx.channel());
+        // ctx.channel().eventLoop().execute(new Runnable() {
+        //
+        // @Override
+        // public void run() {
+        ctx.channel().writeAndFlush(CHeaderMessageV2.makeForceLogin());
+        // }
+        // });
         super.channelActive(ctx);
     }
 

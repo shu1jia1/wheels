@@ -36,9 +36,17 @@ public class CHeaderMessageHandler extends SimpleChannelInboundHandler<CHeaderMe
     private STMessageService stMessageService;
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
         // closed on shutdown.
         deviceChannels.add(ctx.channel());
+        ctx.channel().eventLoop().execute(new Runnable() {
+
+            @Override
+            public void run() {
+                ctx.channel().writeAndFlush(CHeaderMessageV2.makeForceLogin());
+            }
+        });
+
         super.channelActive(ctx);
     }
 

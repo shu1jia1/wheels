@@ -1,7 +1,5 @@
 package com.st.modules.message.event;
 
-import org.springframework.stereotype.Service;
-
 import com.st.common.message.STProtoMessage;
 import com.st.common.message.entity.CHeaderMessageV2;
 import com.st.common.message.entity.StMessage.LoginRequet;

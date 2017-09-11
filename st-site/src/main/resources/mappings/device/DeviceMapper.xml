@@ -17,9 +17,6 @@
 			ON DUPLICATE KEY UPDATE
 		NAME= #{name}, devtype=#{devType}, devVer=#{devVer} ,ip= #{ip} ,remarks = #{remarks} ,positionId =#{positionId} ,updateTime = #{createTime}
     </insert>
-	
-			
-		
 		
    <!--  <insert id="insertTestData">
         insert into ${tableName} (name,age)

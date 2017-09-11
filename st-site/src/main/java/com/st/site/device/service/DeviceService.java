@@ -45,4 +45,9 @@ public class DeviceService implements IDeviceService, InitializingBean {
         }
     }
 
+    public List<DeviceInfo> list(String devId) {
+        List<DeviceInfo> deviceList = deviceDao.listDevice(devId);
+        return deviceList;
+    }
+
 }

@@ -4,7 +4,6 @@ import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.List;
 
-import com.github.shu1jia1.common.exception.MessageDecodeException;
 import com.st.common.message.entity.CHeaderMessageV2;
 
 import io.netty.buffer.ByteBuf;
@@ -166,6 +165,7 @@ public class STMessageFrameDecoder extends ByteToMessageDecoder {
         // check header
         if (!Arrays.equals(tagBytes, CHeaderMessageV2.COMMON_TAG)
                 && !Arrays.equals(tagBytes, CHeaderMessageV2.PLC_TAG)) {
+            in.skipBytes(in.readableBytes());
             throw new DecoderException(ctx.channel() + " bytes tag unmatch, content:" + ByteBufUtil.hexDump(in));
         }
         Object decoded = decode(ctx, in);

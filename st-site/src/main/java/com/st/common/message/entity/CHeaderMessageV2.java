@@ -1,6 +1,7 @@
 package com.st.common.message.entity;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.codec.binary.Hex;
 
@@ -21,6 +22,8 @@ import io.netty.buffer.Unpooled;
  * @author  lov
  */
 public class CHeaderMessageV2 {
+    public static AtomicInteger FlownoGen = new AtomicInteger(0);
+
     public static final byte[] COMMON_TAG = new byte[] { 0x55, (byte) 0xaa, 0x55, (byte) 0xaa };
     public static final byte[] PLC_TAG = new byte[] { (byte) 0xFF, (byte) 0x99, (byte) 0x88, (byte) 0xff };
     private byte[] tag = new byte[] { 0x55, (byte) 0xaa, 0x55, (byte) 0xaa };
@@ -28,16 +31,17 @@ public class CHeaderMessageV2 {
     private long flowNo; // 4bytes
     private byte[] dest = new byte[4]; // 4byte
     private byte[] src = new byte[4]; // 4byte
+    private short dstType;
+    private short srcType;
     private short cmd; // 1byte
-    private short dataType; // 1byte
-    private short statusCode; // 1byte
-    private int pkgNum; // 1bytes
+    private short dataType = 0; // 1byte
+    private short statusCode = 0; // 1byte
+    private int pkgNum = 1; // 1bytes
     private byte[] reverse = new byte[4]; // 4byte
     private byte[] data; // 低字节在前，高字节在后,不定
     private byte crc;
 
     private byte[] origBytes;
-    private int SrcType;
 
     public long getFlowNo() {
         return flowNo;
@@ -57,6 +61,8 @@ public class CHeaderMessageV2 {
         flowNo = bytebufer.readUnsignedInt();
         bytebufer.readBytes(dest);
         bytebufer.readBytes(src);
+        dstType = bytebufer.readUnsignedByte();
+        srcType = bytebufer.readUnsignedByte();
         cmd = bytebufer.readUnsignedByte();
         dataType = bytebufer.readUnsignedByte();
         statusCode = bytebufer.readUnsignedByte();
@@ -74,6 +80,8 @@ public class CHeaderMessageV2 {
         resp.flowNo = this.flowNo;
         resp.src = Arrays.copyOf(this.dest, this.dest.length);
         resp.dest = Arrays.copyOf(this.src, this.src.length);
+        resp.dstType = this.srcType;
+        resp.srcType = this.dstType;
         resp.cmd = this.cmd;
         resp.dataType = 0;// this.dataType;
         resp.statusCode = (short) (success ? 0 : 1);
@@ -92,12 +100,15 @@ public class CHeaderMessageV2 {
             // throw new MessageDecodeException("pkgLength not set.");
             this.pkgLength = getCLength();
         }
+
         ByteBuf bytebufer = Unpooled.buffer(this.pkgLength);
         bytebufer.writeBytes(tag);
         bytebufer.writeShort(pkgLength);
         bytebufer.writeInt((int) (flowNo & 0xffffffff));
         bytebufer.writeBytes(dest);
         bytebufer.writeBytes(src);
+        bytebufer.writeByte(dstType);
+        bytebufer.writeByte(srcType);
         bytebufer.writeByte(cmd);
         bytebufer.writeByte(dataType);
         bytebufer.writeByte(statusCode);
@@ -108,6 +119,18 @@ public class CHeaderMessageV2 {
         bytebufer.writeByte(0x01);
         origBytes = new byte[pkgLength];
         bytebufer.readBytes(origBytes);
+    }
+
+    public CHeaderMessageV2 withCmd(CmdCode cmd) {
+        this.cmd = (short) cmd.getNumber();
+        return this;
+    }
+
+    public CHeaderMessageV2 withDest(AddressType type, String id) {
+        this.dstType = (short) type.getNumber();
+        byte[] devNo = org.springframework.security.crypto.codec.Hex.decode(id);
+        System.arraycopy(devNo, devNo.length - 4, dest, 0, 4);
+        return this;
     }
 
     private void resetCrc() {
@@ -126,7 +149,7 @@ public class CHeaderMessageV2 {
     }
 
     public int getHeaderLength() {
-        return 26;
+        return 28;
     }
 
     /**
@@ -180,6 +203,16 @@ public class CHeaderMessageV2 {
 
     public String getSrcStr() {
         return new String(Hex.encodeHex(src));
+    }
+
+    public Address getSrcAddr() {
+        return Address.newBuilder().setIdentify(new String(Hex.encodeHex(src)))
+                .setAddrType(AddressType.forNumber(srcType)).build();
+    }
+
+    public Address getDestAddr() {
+        return Address.newBuilder().setIdentify(new String(Hex.encodeHex(dest)))
+                .setAddrType(AddressType.forNumber(dstType)).build();
     }
 
     public void setDest(byte[] dest) {
@@ -264,14 +297,118 @@ public class CHeaderMessageV2 {
         return cmd;
     }
 
-    public int getSrcType() {
-        if (Arrays.equals(tag, COMMON_TAG)) {
-            return AddressType.MACHINE_VALUE;
+    public static byte[] getCommonTag() {
+        return COMMON_TAG;
+    }
+
+    public static byte[] getPlcTag() {
+        return PLC_TAG;
+    }
+
+    public byte[] getTag() {
+        return tag;
+    }
+
+    public int getPkgLength() {
+        return pkgLength;
+    }
+
+    public short getDstType() {
+        return dstType;
+    }
+
+    public short getSrcType() {
+        return srcType;
+    }
+
+    public short getDataType() {
+        return dataType;
+    }
+
+    public short getStatusCode() {
+        return statusCode;
+    }
+
+    public int getPkgNum() {
+        return pkgNum;
+    }
+
+    public byte[] getReverse() {
+        return reverse;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public byte getCrc() {
+        return crc;
+    }
+
+    public byte[] getOrigBytes() {
+        return origBytes;
+    }
+
+    public static CHeaderMessageV2 makeForceLogin() {
+        CHeaderMessageV2 msg = new CHeaderMessageV2();
+        msg = msg.withCmd(CmdCode.CMD_ForceLogin).withAllDest().withCloudSrc().withAutoFlowNo().withDataType(1)
+                .withData(new byte[] { 0x03 });
+        msg.build();
+        return msg;
+    }
+
+    private CHeaderMessageV2 withDataType(int dataType) {
+        this.dataType = (short) dataType;
+        return this;
+    }
+
+    private CHeaderMessageV2 withData(byte[] data) {
+        this.data = data;
+        return this;
+    }
+
+    private CHeaderMessageV2 withAutoFlowNo() {
+        this.flowNo = FlownoGen.getAndIncrement();
+        return this;
+    }
+
+    private CHeaderMessageV2 withCloudSrc() {
+        this.withSrcType(AddressType.CLOUD);
+        this.withSrc(new byte[] { (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF });
+        return this;
+
+    }
+
+    private CHeaderMessageV2 withSrc(byte[] srcbytes) {
+        if (srcbytes == null || srcbytes.length != 4) {
+            throw new IllegalArgumentException("dest not right format.");
         }
-        if (Arrays.equals(tag, PLC_TAG)) {
-            return AddressType.PLC_VALUE;
+        this.src = srcbytes;
+        return this;
+    }
+
+    private CHeaderMessageV2 withSrcType(AddressType type) {
+        this.srcType = (short) type.getNumber();
+        return this;
+    }
+
+    private CHeaderMessageV2 withAllDest() {
+        this.withDstType(AddressType.ALL);
+        this.withDest(new byte[] { 0x00, 0x00, 0x00, 0x00 });
+        return this;
+    }
+
+    private CHeaderMessageV2 withDest(byte[] dest) {
+        if (dest == null || dest.length != 4) {
+            throw new IllegalArgumentException("dest not right format.");
         }
-        return 0;
+        this.dest = dest;
+        return this;
+    }
+
+    private CHeaderMessageV2 withDstType(AddressType type) {
+        this.dstType = (short) type.getNumber();
+        return this;
     }
 
 }
