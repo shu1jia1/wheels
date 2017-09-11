@@ -28,8 +28,7 @@ public class STCommonTest {
     public void testWithPayload() {
         STProtoMessage proto = STProtoMessage.newBuilder().setCmdCode(CmdCode.CMD_ForceLogin).withMessageId("messageId")
                 .withCorrelationId("correlationId").withMachineDst("Gd10")
-                .withPayload(LoginRequet.newBuilder().setDevno("123").setType(AddressType.MACHINE_VALUE).build())
-                .build();
+                .withPayload(LoginRequet.newBuilder().setDevno("123").setType(AddressType.GD10_VALUE).build()).build();
         System.out.println(proto.getStMessage());
         byte[] data = proto.getStMessage().toByteArray();
         System.out.println(PrintUtil.toHexStr(data));
