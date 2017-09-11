@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.codec.binary.Hex;
 
 import com.github.shu1jia1.common.exception.MessageDecodeException;
+import com.github.shu1jia1.common.utils.string.CrcHelper;
 import com.st.common.message.entity.STCommon.Address;
 import com.st.common.message.entity.STCommon.AddressType;
 import com.st.common.message.entity.STCommon.CmdCode;
@@ -116,7 +117,8 @@ public class CHeaderMessageV2 {
         bytebufer.writeBytes(reverse);
         bytebufer.writeBytes(data);
         // crc
-        bytebufer.writeByte(0x01);
+        byte crc = CrcHelper.getCrc8(ByteBufUtil.getBytes(bytebufer));
+        bytebufer.writeByte(crc);
         origBytes = new byte[pkgLength];
         bytebufer.readBytes(origBytes);
     }
@@ -244,7 +246,7 @@ public class CHeaderMessageV2 {
         builder.append(", src:");
         builder.append(Arrays.toString(src));
         builder.append(", cmd:");
-        builder.append(cmd);
+        builder.append(CmdCode.forNumber(cmd) == null ? cmd : CmdCode.forNumber(cmd));
         builder.append(", dataType:");
         builder.append(dataType);
         builder.append(", statusCode:");
@@ -269,7 +271,7 @@ public class CHeaderMessageV2 {
         builder.append(", src:");
         builder.append(Arrays.toString(src));
         builder.append(", cmd:");
-        builder.append(cmd);
+        builder.append(CmdCode.forNumber(cmd) == null ? cmd : CmdCode.forNumber(cmd));
         builder.append(", dataType:");
         builder.append(dataType);
         builder.append(", statusCode:");

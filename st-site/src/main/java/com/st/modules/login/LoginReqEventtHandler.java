@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.shu1jia1.common.utils.string.PrintUtil;
 import com.google.common.eventbus.Subscribe;
 import com.st.common.message.STProtoMessage;
 import com.st.common.message.entity.CHeaderMessageV2;
@@ -41,6 +42,7 @@ public class LoginReqEventtHandler {
         // Address src = msg.getSrc();
         final CHeaderMessageV2 loginMessage = loginEvent.getcMessage();
         String devNo = loginMessage.getSrcStr();
+        devChannels.addChannel(loginMessage.getDstType(), devNo, loginEvent.getChannel());
 
         logger.info("recevie Login from {},details {}.", devNo.toString(), loginMessage.getSimpleInfo());
         // final boolean success =
@@ -51,7 +53,7 @@ public class LoginReqEventtHandler {
         SocketAddress remoteAddress = loginEvent.getChannel().remoteAddress();
         final boolean success = deviceService.deviceLogIn(device, remoteAddress.toString());
         Set<String> onlineDevice = devChannels.getAllOnlineDevice();
-
+        logger.info("Current online device {}.", PrintUtil.toString(onlineDevice));
         byte[] respData = new byte[0];
         if (success) {
             respData = makeLoginResp(deviceService.list(devNo), onlineDevice);

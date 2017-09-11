@@ -114,6 +114,8 @@ public class STMessageService implements InitializingBean {
         if (destChannel == null) {
             logger.info("Can't find channel for message {} ", sendEvent.getcMessage().getSimpleInfo());
             return;
+        }else{
+            logger.info("Find dstChannel {} for message {} ", destChannel, sendEvent.getcMessage().getSimpleInfo());
         }
         destChannel.eventLoop().execute(new Runnable() {
             @Override

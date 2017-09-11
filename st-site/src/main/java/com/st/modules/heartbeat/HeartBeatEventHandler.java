@@ -27,7 +27,8 @@ public class HeartBeatEventHandler {
         final CHeaderMessageV2 heartBeatMessage = heartEvent.getcMessage();
         String devno = heartBeatMessage.getSrcStr();
         SocketAddress remoteAddr = heartEvent.getChannel().remoteAddress();
-        logger.info("recevie {} heart beat from {}", heartBeatMessage.getSrcAddr(), remoteAddr);
+        logger.info("recevie {}-{} heart beat from " + remoteAddr,
+                heartBeatMessage.getSrcAddr().getAddrType().toString(), heartBeatMessage.getSrcAddr().getIdentify());
 
         heartEvent.getChannel().eventLoop().execute(new Runnable() {
             @Override

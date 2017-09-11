@@ -165,8 +165,9 @@ public class STMessageFrameDecoder extends ByteToMessageDecoder {
         // check header
         if (!Arrays.equals(tagBytes, CHeaderMessageV2.COMMON_TAG)
                 && !Arrays.equals(tagBytes, CHeaderMessageV2.PLC_TAG)) {
+            String dataStr = ByteBufUtil.hexDump(in);
             in.skipBytes(in.readableBytes());
-            throw new DecoderException(ctx.channel() + " bytes tag unmatch, content:" + ByteBufUtil.hexDump(in));
+            throw new DecoderException(ctx.channel() + " bytes tag unmatch, content:" + dataStr);
         }
         Object decoded = decode(ctx, in);
         if (decoded != null) {
