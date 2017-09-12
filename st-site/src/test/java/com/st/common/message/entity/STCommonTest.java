@@ -17,7 +17,7 @@ public class STCommonTest {
 
     @Test
     public void test() {
-        STProtoMessage proto = STProtoMessage.newBuilder().setCmdCode(CmdCode.CMD_ForceLogin).withMessageId("messageId")
+        STProtoMessage proto = STProtoMessage.newBuilder().setCmdCode(CmdCode.CMD_LoginRequet).withMessageId("messageId")
                 .withCorrelationId("correlationId").withMachineDst("Gd10")
                 .withPayload(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04 }).build();
         byte[] data = proto.getStMessage().toByteArray();
@@ -26,7 +26,7 @@ public class STCommonTest {
 
     @Test
     public void testWithPayload() {
-        STProtoMessage proto = STProtoMessage.newBuilder().setCmdCode(CmdCode.CMD_ForceLogin).withMessageId("messageId")
+        STProtoMessage proto = STProtoMessage.newBuilder().setCmdCode(CmdCode.CMD_LoginRequet).withMessageId("messageId")
                 .withCorrelationId("correlationId").withMachineDst("Gd10")
                 .withPayload(LoginRequet.newBuilder().setDevno("123").setType(AddressType.GD10_VALUE).build()).build();
         System.out.println(proto.getStMessage());
