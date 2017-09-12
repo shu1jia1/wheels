@@ -48,10 +48,10 @@ enum AddressType {
 enum CmdCode{
     CMD_HeartBeat = 255; //心跳
 
-    CMD_ForceLogin = 0; //要求设备登陆
+    //CMD_ForceLogin = 0; //要求设备登陆 0
 
-    CMD_LoginRequet = 2; //设备登陆
-    CMD_LoginResponse = 102; // 设备登陆回应
+    CMD_LoginRequet = 0; //设备登陆
+    CMD_LoginResponse = 254; // 设备登陆回应
     
 
     //注:获取设备列表的接口不在tcp通道上
