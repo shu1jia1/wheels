@@ -353,7 +353,7 @@ public class CHeaderMessageV2 {
 
     public static CHeaderMessageV2 makeForceLogin() {
         CHeaderMessageV2 msg = new CHeaderMessageV2();
-        msg = msg.withCmd(CmdCode.CMD_ForceLogin).withAllDest().withCloudSrc().withAutoFlowNo().withDataType(1)
+        msg = msg.withCmd(CmdCode.CMD_LoginRequet).withAllDest().withCloudSrc().withAutoFlowNo().withDataType(1)
                 .withData(new byte[] { 0x03 });
         msg.build();
         return msg;

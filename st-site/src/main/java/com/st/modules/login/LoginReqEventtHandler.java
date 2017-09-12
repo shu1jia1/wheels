@@ -17,6 +17,8 @@ import com.github.shu1jia1.common.utils.string.PrintUtil;
 import com.google.common.eventbus.Subscribe;
 import com.st.common.message.STProtoMessage;
 import com.st.common.message.entity.CHeaderMessageV2;
+import com.st.common.message.entity.STCommon.AddressType;
+import com.st.common.message.entity.STCommon.CmdCode;
 import com.st.common.message.entity.StMessage.LoginResponse;
 import com.st.modules.device.DeviceChannels;
 import com.st.modules.message.event.LoginRequetReceiveEvent;
@@ -54,11 +56,12 @@ public class LoginReqEventtHandler {
         final boolean success = deviceService.deviceLogIn(device, remoteAddress.toString());
         Set<String> onlineDevice = devChannels.getAllOnlineDevice();
         logger.info("Current online device {}.", PrintUtil.toString(onlineDevice));
-        byte[] respData = new byte[0];
-        if (success) {
+
+        byte[] respData = new byte[] { 0x03 }; // 给dtu和主机的
+        if (success && loginMessage.getSrcAddr().getAddrType() == AddressType.GEOMATIVE) {
             respData = makeLoginResp(deviceService.list(devNo), onlineDevice);
         }
-        final CHeaderMessageV2 resp = loginMessage.makeResponse(success, respData);
+        final CHeaderMessageV2 resp = loginMessage.makeResponse(success, respData).withCmd(CmdCode.CMD_LoginResponse);
         loginEvent.getChannel().eventLoop().execute(new Runnable() {
             @Override
             public void run() {
