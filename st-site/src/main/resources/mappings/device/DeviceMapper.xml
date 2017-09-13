@@ -13,7 +13,7 @@
 		INSERT INTO cm_device
 		(devno, NAME, devtype, devVer, ip, remarks, positionId, createTime)
 		VALUES
-		(#{devNo},#{name},#{devType},,#{devVer},#{ip},#{remarks},#{positionId},#{createTime})
+		(#{devNo},#{name},#{devType},#{devVer},#{ip},#{remarks},#{positionId},#{createTime})
 		ON DUPLICATE KEY UPDATE
 		NAME= #{name}, devtype=#{devType},
 		devVer=#{devVer} ,ip= #{ip} ,remarks = #{remarks} ,positionId
