@@ -1,4 +1,4 @@
-package com.st.modules.login;
+package com.st.modules.message.eventhandler;
 
 import java.net.SocketAddress;
 import java.util.ArrayList;
@@ -70,7 +70,15 @@ public class LoginReqEventtHandler {
     }
 
     // 结构
-    // 设备数目两个字节，然后每个设备由一个字节的设备类型和四个字节的id组成
+    /** 设备数目两个字节，然后每个设备由一个字节的设备类型和四个字节的id组成
+    {
+        byte[2] devLen,
+        DevData[devLen] devs;
+        DevData{
+            byte devType;
+            byte[4] devAddr;
+        }
+    }*/
     private byte[] makeLoginResp(List<DeviceInfo> deviceList, Set<String> onlineDeviceNos) {
         List<DeviceInfo> onlineDevices = new ArrayList<>();
         for (DeviceInfo device : deviceList) {

@@ -58,5 +58,20 @@ public class MessageReceiveEvent<T extends MessageLite> {
     public CHeaderMessageV2 getcMessage() {
         return cMessage;
     }
-    
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.getClass().getName()).append("{channel:");
+        builder.append(channel);
+        builder.append(", stMessage:");
+        builder.append(stMessage);
+        builder.append(", innerMessage:");
+        builder.append(innerMessage);
+        builder.append(", cMessage:");
+        builder.append(cMessage);
+        builder.append("}");
+        return builder.toString();
+    }
+
 }

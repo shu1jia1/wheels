@@ -288,6 +288,10 @@ public final class STCommon {
   }
 
   /**
+   * <pre>
+   *记录消息是请求还是回应
+   * </pre>
+   *
    * Protobuf enum {@code stcommon.DataType}
    */
   public enum DataType
@@ -375,6 +379,117 @@ public final class STCommon {
     }
 
     // @@protoc_insertion_point(enum_scope:stcommon.DataType)
+  }
+
+  /**
+   * <pre>
+   *记录
+   * </pre>
+   *
+   * Protobuf enum {@code stcommon.StatusCode}
+   */
+  public enum StatusCode
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     *0成功，1下端网络发送失败，2上端发送失败
+     * </pre>
+     *
+     * <code>SUCCESS = 0;</code>
+     */
+    SUCCESS(0),
+    /**
+     * <code>FAILED = 1;</code>
+     */
+    FAILED(1),
+    /**
+     * <code>SEND_FAILED = 2;</code>
+     */
+    SEND_FAILED(2),
+    ;
+
+    /**
+     * <pre>
+     *0成功，1下端网络发送失败，2上端发送失败
+     * </pre>
+     *
+     * <code>SUCCESS = 0;</code>
+     */
+    public static final int SUCCESS_VALUE = 0;
+    /**
+     * <code>FAILED = 1;</code>
+     */
+    public static final int FAILED_VALUE = 1;
+    /**
+     * <code>SEND_FAILED = 2;</code>
+     */
+    public static final int SEND_FAILED_VALUE = 2;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static StatusCode valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static StatusCode forNumber(int value) {
+      switch (value) {
+        case 0: return SUCCESS;
+        case 1: return FAILED;
+        case 2: return SEND_FAILED;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<StatusCode>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        StatusCode> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<StatusCode>() {
+            public StatusCode findValueByNumber(int number) {
+              return StatusCode.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.st.common.message.entity.STCommon.getDescriptor().getEnumTypes().get(3);
+    }
+
+    private static final StatusCode[] VALUES = values();
+
+    public static StatusCode valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private StatusCode(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:stcommon.StatusCode)
   }
 
   public interface STMessageOrBuilder extends
@@ -3533,8 +3648,9 @@ public final class STCommon {
       "\020\003\022\007\n\003PLC\020\004\022\007\n\003DTU\020\005*G\n\007CmdCode\022\022\n\rCMD_H" +
       "eartBeat\020\377\001\022\023\n\016CMD_ForceLogin\020\376\001\022\023\n\017CMD_" +
       "LoginRequet\020\000*\034\n\010DataType\022\007\n\003REQ\020\001\022\007\n\003RS" +
-      "P\020\002B(\n\034com.st.common.message.entityB\010STC" +
-      "ommon"
+      "P\020\002*6\n\nStatusCode\022\013\n\007SUCCESS\020\000\022\n\n\006FAILED" +
+      "\020\001\022\017\n\013SEND_FAILED\020\002B(\n\034com.st.common.mes" +
+      "sage.entityB\010STCommon"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

@@ -2,7 +2,6 @@ package com.st.modules.message.event;
 
 import com.st.common.message.STProtoMessage;
 import com.st.common.message.entity.CHeaderMessageV2;
-import com.st.common.message.entity.STCommon.Address;
 
 import io.netty.channel.Channel;
 

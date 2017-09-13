@@ -1,4 +1,4 @@
-package com.st.modules.heartbeat;
+package com.st.modules.message.eventhandler;
 
 import java.net.SocketAddress;
 
@@ -27,8 +27,7 @@ public class HeartBeatEventHandler {
         final CHeaderMessageV2 heartBeatMessage = heartEvent.getcMessage();
         String devno = heartBeatMessage.getSrcStr();
         SocketAddress remoteAddr = heartEvent.getChannel().remoteAddress();
-        logger.info("recevie {}-{} heart beat from " + remoteAddr,
-                heartBeatMessage.getSrcAddr().getAddrType().toString(), heartBeatMessage.getSrcAddr().getIdentify());
+        logger.info("recevie {} {} from " + remoteAddr, heartBeatMessage.getSimpleInfo());
 
         heartEvent.getChannel().eventLoop().execute(new Runnable() {
             @Override

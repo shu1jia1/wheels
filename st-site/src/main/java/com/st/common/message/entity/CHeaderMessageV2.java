@@ -10,6 +10,7 @@ import com.github.shu1jia1.common.utils.string.CrcHelper;
 import com.st.common.message.entity.STCommon.Address;
 import com.st.common.message.entity.STCommon.AddressType;
 import com.st.common.message.entity.STCommon.CmdCode;
+import com.st.common.message.entity.STCommon.StatusCode;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
@@ -135,10 +136,6 @@ public class CHeaderMessageV2 {
         return this;
     }
 
-    private void resetCrc() {
-
-    }
-
     public byte[] toBytes() throws MessageDecodeException {
         if (origBytes == null || origBytes.length == 0) {
             this.build();
@@ -239,13 +236,13 @@ public class CHeaderMessageV2 {
 
     public String getSimpleInfo() {
         StringBuilder builder = new StringBuilder();
-        builder.append("{CMsg-");
-        builder.append(flowNo).append("");
+        builder.append("C{ ");
         builder.append(CmdCode.forNumber(cmd) == null ? "cmd:" + cmd : CmdCode.forNumber(cmd));
-        builder.append("src");
+        builder.append("-(").append(flowNo);
+        builder.append(") src ");
         builder.append(AddressType.forNumber(srcType) == null ? srcType : AddressType.forNumber(srcType));
         builder.append(Arrays.toString(src));
-        builder.append("--->dst");
+        builder.append("--->dst ");
         builder.append(AddressType.forNumber(dstType) == null ? dstType : AddressType.forNumber(dstType));
         builder.append(Arrays.toString(dest));
         builder.append(", dataType:");
@@ -392,6 +389,11 @@ public class CHeaderMessageV2 {
 
     private CHeaderMessageV2 withSrcType(AddressType type) {
         this.srcType = (short) type.getNumber();
+        return this;
+    }
+
+    public CHeaderMessageV2 withStatusCode(StatusCode statusCode) {
+        this.statusCode = (short) statusCode.getNumber();
         return this;
     }
 

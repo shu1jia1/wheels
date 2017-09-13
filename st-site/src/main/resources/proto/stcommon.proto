@@ -61,8 +61,16 @@ enum CmdCode{
     //CMD_Transfer = 100; //转发，如果需要云端解析转发的消息，每个转发消息需要订不同命令码
 }
 
-
+//记录消息是请求还是回应
 enum DataType{
     REQ =  1;
     RSP = 2;
+}
+
+//记录
+enum StatusCode{
+  //0成功，1下端网络发送失败，2上端发送失败
+  SUCCESS = 0;
+  FAILED = 1;
+  SEND_FAILED = 2;
 }
