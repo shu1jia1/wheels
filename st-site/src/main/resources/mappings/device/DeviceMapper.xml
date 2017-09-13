@@ -8,15 +8,17 @@
 	<select id="listDevice" resultType="com.st.site.device.entity.DeviceInfo">
  		SELECT a.* FROM cm_device a ,cm_geo_device  b WHERE a.`devno` = b.`devno` AND b.`geoNo` = #{geoNo}
 	</select>
-	
+
 	<insert id="insertOrUpdate" parameterType="com.st.site.device.entity.DeviceInfo">
-	  INSERT INTO cm_device
+		INSERT INTO cm_device
 		(devno, NAME, devtype, devVer, ip, remarks, positionId, createTime)
 		VALUES
-		(#{devNo},#{devType},#{name},#{devVer},#{ip},#{remarks},#{positionId},#{createTime})
-			ON DUPLICATE KEY UPDATE
-		NAME= #{name}, devtype=#{devType}, devVer=#{devVer} ,ip= #{ip} ,remarks = #{remarks} ,positionId =#{positionId} ,updateTime = #{createTime}
-    </insert>
+		(#{devNo},#{name},#{devType},,#{devVer},#{ip},#{remarks},#{positionId},#{createTime})
+		ON DUPLICATE KEY UPDATE
+		NAME= #{name}, devtype=#{devType},
+		devVer=#{devVer} ,ip= #{ip} ,remarks = #{remarks} ,positionId
+		=#{positionId} ,updateTime = #{createTime}
+	</insert>
 		
    <!--  <insert id="insertTestData">
         insert into ${tableName} (name,age)
