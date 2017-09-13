@@ -34,7 +34,7 @@ public class HeartBeatEventHandler {
             @Override
             public void run() {
                 // 心跳包回应0x00
-                heartEvent.getChannel().writeAndFlush(heartBeatMessage.makeResponse(true, new byte[] { 0x00 }));
+                heartEvent.getChannel().writeAndFlush(heartBeatMessage.makeResponse(true, new byte[] { 0x00 }).build());
             }
         });
 

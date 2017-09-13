@@ -287,6 +287,96 @@ public final class STCommon {
     // @@protoc_insertion_point(enum_scope:stcommon.CmdCode)
   }
 
+  /**
+   * Protobuf enum {@code stcommon.DataType}
+   */
+  public enum DataType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>REQ = 1;</code>
+     */
+    REQ(1),
+    /**
+     * <code>RSP = 2;</code>
+     */
+    RSP(2),
+    ;
+
+    /**
+     * <code>REQ = 1;</code>
+     */
+    public static final int REQ_VALUE = 1;
+    /**
+     * <code>RSP = 2;</code>
+     */
+    public static final int RSP_VALUE = 2;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static DataType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static DataType forNumber(int value) {
+      switch (value) {
+        case 1: return REQ;
+        case 2: return RSP;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<DataType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        DataType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<DataType>() {
+            public DataType findValueByNumber(int number) {
+              return DataType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.st.common.message.entity.STCommon.getDescriptor().getEnumTypes().get(2);
+    }
+
+    private static final DataType[] VALUES = values();
+
+    public static DataType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private DataType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:stcommon.DataType)
+  }
+
   public interface STMessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:stcommon.STMessage)
       com.google.protobuf.MessageOrBuilder {
@@ -3442,8 +3532,9 @@ public final class STCommon {
       "\003ALL\020\000\022\t\n\005CLOUD\020\001\022\r\n\tGEOMATIVE\020\002\022\010\n\004GD10" +
       "\020\003\022\007\n\003PLC\020\004\022\007\n\003DTU\020\005*J\n\007CmdCode\022\022\n\rCMD_H" +
       "eartBeat\020\377\001\022\023\n\017CMD_LoginRequet\020\000\022\026\n\021CMD_" +
-      "LoginResponse\020\376\001B(\n\034com.st.common.messag" +
-      "e.entityB\010STCommon"
+      "LoginResponse\020\376\001*\034\n\010DataType\022\007\n\003REQ\020\001\022\007\n" +
+      "\003RSP\020\002B(\n\034com.st.common.message.entityB\010" +
+      "STCommon"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

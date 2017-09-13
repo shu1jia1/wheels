@@ -84,7 +84,7 @@ public class CHeaderMessageV2 {
         resp.dstType = this.srcType;
         resp.srcType = this.dstType;
         resp.cmd = this.cmd;
-        resp.dataType = 0;// this.dataType;
+        resp.dataType = 2;// this.dataType;
         resp.statusCode = (short) (success ? 0 : 1);
         resp.pkgNum = this.pkgNum;
         resp.reverse = Arrays.copyOf(this.reverse, this.reverse.length);
@@ -92,11 +92,10 @@ public class CHeaderMessageV2 {
         // resp.crc = bytebufer.readByte();
         // 重算size
         resp.pkgLength = resp.getCLength();
-        resp.build();
         return resp;
     }
 
-    private void build() {
+    public CHeaderMessageV2 build() {
         if (pkgLength == 0) {
             // throw new MessageDecodeException("pkgLength not set.");
             this.pkgLength = getCLength();
@@ -121,6 +120,7 @@ public class CHeaderMessageV2 {
         bytebufer.writeByte(crc);
         origBytes = new byte[pkgLength];
         bytebufer.readBytes(origBytes);
+        return this;
     }
 
     public CHeaderMessageV2 withCmd(CmdCode cmd) {
@@ -239,8 +239,8 @@ public class CHeaderMessageV2 {
 
     public String getSimpleInfo() {
         StringBuilder builder = new StringBuilder();
-        builder.append("CV2[");
-        builder.append(flowNo).append("]");
+        builder.append("{CMsg-");
+        builder.append(flowNo).append("");
         builder.append(CmdCode.forNumber(cmd) == null ? "cmd:" + cmd : CmdCode.forNumber(cmd));
         builder.append("src");
         builder.append(AddressType.forNumber(srcType) == null ? srcType : AddressType.forNumber(srcType));
@@ -254,7 +254,7 @@ public class CHeaderMessageV2 {
         builder.append(statusCode);
         builder.append(", pkgNum:");
         builder.append(pkgNum);
-        builder.append("]");
+        builder.append("}");
         return builder.toString();
     }
 

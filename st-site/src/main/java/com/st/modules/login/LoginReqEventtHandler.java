@@ -61,7 +61,7 @@ public class LoginReqEventtHandler {
         if (success && loginMessage.getSrcAddr().getAddrType() == AddressType.GEOMATIVE) {
             respData = makeLoginResp(deviceService.list(devNo), onlineDevice);
         }
-        final CHeaderMessageV2 resp = loginMessage.makeResponse(success, respData).withCmd(CmdCode.CMD_LoginResponse);
+        final CHeaderMessageV2 resp = loginMessage.makeResponse(success, respData).withCmd(CmdCode.CMD_LoginResponse).build();
         loginEvent.getChannel().eventLoop().execute(new Runnable() {
             @Override
             public void run() {
