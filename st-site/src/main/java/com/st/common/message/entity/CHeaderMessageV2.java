@@ -239,21 +239,22 @@ public class CHeaderMessageV2 {
 
     public String getSimpleInfo() {
         StringBuilder builder = new StringBuilder();
-        builder.append("CHeaderMessageV2{flowNo:");
-        builder.append(flowNo);
-        builder.append(", dest:");
-        builder.append(Arrays.toString(dest));
-        builder.append(", src:");
+        builder.append("CV2[");
+        builder.append(flowNo).append("]");
+        builder.append(CmdCode.forNumber(cmd) == null ? "cmd:" + cmd : CmdCode.forNumber(cmd));
+        builder.append("src");
+        builder.append(AddressType.forNumber(srcType) == null ? srcType : AddressType.forNumber(srcType));
         builder.append(Arrays.toString(src));
-        builder.append(", cmd:");
-        builder.append(CmdCode.forNumber(cmd) == null ? cmd : CmdCode.forNumber(cmd));
+        builder.append("--->dst");
+        builder.append(AddressType.forNumber(dstType) == null ? dstType : AddressType.forNumber(dstType));
+        builder.append(Arrays.toString(dest));
         builder.append(", dataType:");
         builder.append(dataType);
         builder.append(", statusCode:");
         builder.append(statusCode);
         builder.append(", pkgNum:");
         builder.append(pkgNum);
-        builder.append("}");
+        builder.append("]");
         return builder.toString();
     }
 

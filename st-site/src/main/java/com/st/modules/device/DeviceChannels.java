@@ -64,7 +64,7 @@ public class DeviceChannels {
         HashSet<String> devNos = new HashSet<>();
         for (Map.Entry<String, ChannelId> e : devChannelMap.entrySet()) {
             Channel channel = allChannels.find(e.getValue());
-            if (channel.isOpen()) {
+            if (channel != null && channel.isOpen()) {
                 devNos.add(e.getKey());
             }
         }
