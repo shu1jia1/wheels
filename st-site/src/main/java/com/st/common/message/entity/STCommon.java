@@ -179,20 +179,20 @@ public final class STCommon {
     CMD_HeartBeat(255),
     /**
      * <pre>
+     *要求设备登陆 0
+     * </pre>
+     *
+     * <code>CMD_ForceLogin = 254;</code>
+     */
+    CMD_ForceLogin(254),
+    /**
+     * <pre>
      *设备登陆
      * </pre>
      *
      * <code>CMD_LoginRequet = 0;</code>
      */
     CMD_LoginRequet(0),
-    /**
-     * <pre>
-     * 设备登陆回应
-     * </pre>
-     *
-     * <code>CMD_LoginResponse = 254;</code>
-     */
-    CMD_LoginResponse(254),
     ;
 
     /**
@@ -205,20 +205,20 @@ public final class STCommon {
     public static final int CMD_HeartBeat_VALUE = 255;
     /**
      * <pre>
+     *要求设备登陆 0
+     * </pre>
+     *
+     * <code>CMD_ForceLogin = 254;</code>
+     */
+    public static final int CMD_ForceLogin_VALUE = 254;
+    /**
+     * <pre>
      *设备登陆
      * </pre>
      *
      * <code>CMD_LoginRequet = 0;</code>
      */
     public static final int CMD_LoginRequet_VALUE = 0;
-    /**
-     * <pre>
-     * 设备登陆回应
-     * </pre>
-     *
-     * <code>CMD_LoginResponse = 254;</code>
-     */
-    public static final int CMD_LoginResponse_VALUE = 254;
 
 
     public final int getNumber() {
@@ -236,8 +236,8 @@ public final class STCommon {
     public static CmdCode forNumber(int value) {
       switch (value) {
         case 255: return CMD_HeartBeat;
+        case 254: return CMD_ForceLogin;
         case 0: return CMD_LoginRequet;
-        case 254: return CMD_LoginResponse;
         default: return null;
       }
     }
@@ -3530,11 +3530,11 @@ public final class STCommon {
       "ess\022\'\n\010addrType\030\001 \002(\0162\025.stcommon.Address",
       "Type\022\020\n\010Identify\030\002 \002(\t*L\n\013AddressType\022\007\n" +
       "\003ALL\020\000\022\t\n\005CLOUD\020\001\022\r\n\tGEOMATIVE\020\002\022\010\n\004GD10" +
-      "\020\003\022\007\n\003PLC\020\004\022\007\n\003DTU\020\005*J\n\007CmdCode\022\022\n\rCMD_H" +
-      "eartBeat\020\377\001\022\023\n\017CMD_LoginRequet\020\000\022\026\n\021CMD_" +
-      "LoginResponse\020\376\001*\034\n\010DataType\022\007\n\003REQ\020\001\022\007\n" +
-      "\003RSP\020\002B(\n\034com.st.common.message.entityB\010" +
-      "STCommon"
+      "\020\003\022\007\n\003PLC\020\004\022\007\n\003DTU\020\005*G\n\007CmdCode\022\022\n\rCMD_H" +
+      "eartBeat\020\377\001\022\023\n\016CMD_ForceLogin\020\376\001\022\023\n\017CMD_" +
+      "LoginRequet\020\000*\034\n\010DataType\022\007\n\003REQ\020\001\022\007\n\003RS" +
+      "P\020\002B(\n\034com.st.common.message.entityB\010STC" +
+      "ommon"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

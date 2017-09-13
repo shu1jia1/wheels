@@ -18,7 +18,6 @@ import com.google.common.eventbus.Subscribe;
 import com.st.common.message.STProtoMessage;
 import com.st.common.message.entity.CHeaderMessageV2;
 import com.st.common.message.entity.STCommon.AddressType;
-import com.st.common.message.entity.STCommon.CmdCode;
 import com.st.common.message.entity.StMessage.LoginResponse;
 import com.st.modules.device.DeviceChannels;
 import com.st.modules.message.event.LoginRequetReceiveEvent;
@@ -61,7 +60,7 @@ public class LoginReqEventtHandler {
         if (success && loginMessage.getSrcAddr().getAddrType() == AddressType.GEOMATIVE) {
             respData = makeLoginResp(deviceService.list(devNo), onlineDevice);
         }
-        final CHeaderMessageV2 resp = loginMessage.makeResponse(success, respData).withCmd(CmdCode.CMD_LoginResponse).build();
+        final CHeaderMessageV2 resp = loginMessage.makeResponse(success, respData).build();
         loginEvent.getChannel().eventLoop().execute(new Runnable() {
             @Override
             public void run() {
