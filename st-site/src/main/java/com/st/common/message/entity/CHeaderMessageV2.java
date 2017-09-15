@@ -241,10 +241,10 @@ public class CHeaderMessageV2 {
         builder.append("-(").append(flowNo);
         builder.append(") src ");
         builder.append(AddressType.forNumber(srcType) == null ? srcType : AddressType.forNumber(srcType));
-        builder.append(Arrays.toString(src));
+        builder.append("[").append(getSrcStr()).append("]");
         builder.append("--->dst ");
         builder.append(AddressType.forNumber(dstType) == null ? dstType : AddressType.forNumber(dstType));
-        builder.append(Arrays.toString(dest));
+        builder.append("[").append(getDestStr()).append("]");
         builder.append(", dataType:");
         builder.append(dataType);
         builder.append(", statusCode:");
@@ -372,7 +372,7 @@ public class CHeaderMessageV2 {
         return this;
     }
 
-    private CHeaderMessageV2 withCloudSrc() {
+    public CHeaderMessageV2 withCloudSrc() {
         this.withSrcType(AddressType.CLOUD);
         this.withSrc(new byte[] { (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF });
         return this;

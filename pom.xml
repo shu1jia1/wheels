@@ -16,8 +16,8 @@
     <!-- 子模块 -->
     <modules>
         <module>wls-common</module>
-        <!-- <module>wls-site</module>
-        <module>wls-tk</module> -->
+        <module>wls-site</module>
+        <!-- <module>wls-tk</module> -->
 		<module>st-site</module>
     </modules>
 

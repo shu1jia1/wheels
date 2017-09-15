@@ -50,4 +50,9 @@ public class DeviceService implements IDeviceService, InitializingBean {
         return deviceList;
     }
 
+    public String getManagedGenomativeId(String devNo) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

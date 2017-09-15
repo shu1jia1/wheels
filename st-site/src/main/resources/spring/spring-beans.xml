@@ -20,4 +20,25 @@
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
+	<bean id="gloabeExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="8" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="16" />
+		<!-- 队列最大长度 >=mainExecutor.maxSize -->
+		<property name="queueCapacity" value="10240" />
+		<!-- 线程池维护线程所允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="300" />
+		<property name="rejectedExecutionHandler">
+			<bean class="com.github.shu1jia1.common.task.handler.reject.DiscardRejectedExecutionHandler" />
+		</property>
+	</bean>
+
+	<bean id="stEventBus" class="com.google.common.eventbus.AsyncEventBus">
+		<property name="executor" ref="gloabeExecutor"></property>
+	</bean>
+
+
+
 </beans>  
