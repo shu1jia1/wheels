@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.st.common.event.MessageEventBus;
 import com.st.common.message.entity.CHeaderMessageV2;
 import com.st.common.message.entity.STCommon.AddressType;
 import com.st.common.message.entity.STCommon.CmdCode;
@@ -30,13 +30,13 @@ public class DeviceOnlineNotify {
 
     @Resource(name = "deviceChannels")
     private DeviceChannels devChannels;
-    
+
     @Resource(name = "stMessageService")
     private STMessageService stMessageService;
-    
+
     @Resource(name = "stEventBus")
-    private MessageEventBus eventBus;
-    
+    private EventBus eventBus;
+
     @Subscribe
     public void handleLoginRequetReceiveEvent(final LoginRequetReceiveEvent loginEvent) {
         final CHeaderMessageV2 loginMessage = loginEvent.getcMessage();
@@ -44,11 +44,13 @@ public class DeviceOnlineNotify {
         devChannels.addChannel(loginMessage.getDstType(), devNo, loginEvent.getChannel());
 
         String gemativeId = deviceService.getManagedGenomativeId(devNo);
-        
+
         byte[] respData = makeLoginNotify(loginMessage.getSrc(), loginMessage.getSrcType());
-        
-        final CHeaderMessageV2 onlineMessage = loginMessage.makeResponse(true, respData).withDest(AddressType.GEOMATIVE, gemativeId)
-                .withCloudSrc().withCmd(CmdCode.CMD_LoginRequet) //todo to online
+
+        final CHeaderMessageV2 onlineMessage = loginMessage.makeResponse(true, respData)
+                .withDest(AddressType.GEOMATIVE, gemativeId).withCloudSrc().withCmd(CmdCode.CMD_LoginRequet) // todo
+                                                                                                             // to
+                                                                                                             // online
                 .build();
         logger.info("Trans {} online msg to gemative {}.", loginMessage.getSrc(), gemativeId);
         eventBus.post(new MessageSendEvent(onlineMessage));
@@ -73,5 +75,5 @@ public class DeviceOnlineNotify {
         bytebufer.writeBytes(devNo);
         return bytebufer.array();
     }
- 
+
 }

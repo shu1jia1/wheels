@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
-import com.st.common.event.MessageEventBus;
+import com.google.common.eventbus.EventBus;
 import com.st.common.message.STProtoMessage;
 import com.st.common.message.entity.CHeaderMessageV2;
 import com.st.common.message.entity.STCommon.CmdCode;
@@ -15,9 +15,9 @@ import com.st.common.message.entity.StMessage.LoginRequet;
 import com.st.modules.message.event.HeartbeatReceiveEvent;
 import com.st.modules.message.event.LoginRequetReceiveEvent;
 import com.st.modules.message.event.MessageTransferEvent;
+import com.st.modules.message.eventhandler.DeviceOnlineNotify;
 import com.st.modules.message.eventhandler.HeartBeatEventHandler;
 import com.st.modules.message.eventhandler.LoginReqEventtHandler;
-import com.st.modules.message.eventhandler.DeviceOnlineNotify;
 import com.st.modules.message.eventhandler.MessageSender;
 
 import io.netty.channel.Channel;
@@ -39,7 +39,7 @@ public class STMessageService implements InitializingBean {
     private static final Logger logger = LoggerFactory.getLogger(STMessageService.class);
 
     @Resource(name = "stEventBus")
-    private MessageEventBus eventBus;
+    private EventBus eventBus;
 
     @Resource(name = "heartBeatEventHandler")
     private HeartBeatEventHandler heartBeatHanlder;
@@ -49,7 +49,7 @@ public class STMessageService implements InitializingBean {
 
     @Resource(name = "messageSender")
     private MessageSender messageSendAndTransHandler;
-    
+
     @Resource(name = "deviceOnlineNotify")
     private DeviceOnlineNotify deviceOnlineNotify;
 
