@@ -31,12 +31,13 @@
 		<!-- 线程池维护线程所允许的空闲时间 -->
 		<property name="keepAliveSeconds" value="300" />
 		<property name="rejectedExecutionHandler">
-			<bean class="com.github.shu1jia1.common.task.handler.reject.DiscardRejectedExecutionHandler" />
+			<bean
+				class="com.github.shu1jia1.common.task.handler.reject.DiscardRejectedExecutionHandler" />
 		</property>
 	</bean>
 
 	<bean id="stEventBus" class="com.google.common.eventbus.AsyncEventBus">
-		<property name="executor" ref="gloabeExecutor"></property>
+		<constructor-arg name="executor" ref="gloabeExecutor" />
 	</bean>
 
 
