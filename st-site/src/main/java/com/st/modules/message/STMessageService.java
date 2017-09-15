@@ -17,6 +17,7 @@ import com.st.modules.message.event.LoginRequetReceiveEvent;
 import com.st.modules.message.event.MessageTransferEvent;
 import com.st.modules.message.eventhandler.HeartBeatEventHandler;
 import com.st.modules.message.eventhandler.LoginReqEventtHandler;
+import com.st.modules.message.eventhandler.DeviceOnlineNotify;
 import com.st.modules.message.eventhandler.MessageSender;
 
 import io.netty.channel.Channel;
@@ -48,12 +49,16 @@ public class STMessageService implements InitializingBean {
 
     @Resource(name = "messageSender")
     private MessageSender messageSendAndTransHandler;
+    
+    @Resource(name = "deviceOnlineNotify")
+    private DeviceOnlineNotify deviceOnlineNotify;
 
     @Override
     public void afterPropertiesSet() throws Exception {
         eventBus.register(heartBeatHanlder);
         eventBus.register(loginEventHandler);
         eventBus.register(messageSendAndTransHandler);
+        eventBus.register(deviceOnlineNotify);
     }
 
     /**

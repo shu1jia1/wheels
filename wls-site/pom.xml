@@ -8,10 +8,9 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>com.github.shu1jia1</groupId>
-	<artifactId>st-site</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-	<name>st-site</name>
+	<artifactId>wls-site</artifactId>
+	<packaging>jar</packaging>
+	<name>wls-site</name>
 
 	<properties>
 		<org.springframework.security-version>3.2.0.RELEASE</org.springframework.security-version>
@@ -19,12 +18,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.github.shu1jia1</groupId>
-			<artifactId>wls-site</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
 
 		<dependency>
 			<groupId>com.github.shu1jia1</groupId>
@@ -173,94 +166,6 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<finalName>${project.artifactId}</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
-				<configuration>
-					<source>${java-version}</source>
-					<target>${java-version}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12</version>
-				<configuration>
-					<includes>
-						<include>**/*Tests.java</include>
-					</includes>
-					<excludes>
-						<exclude>**/Abstract*.java</exclude>
-					</excludes>
-					<junitArtifactName>junit:junit</junitArtifactName>
-					<argLine>-Xmx512m</argLine>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>install</id>
-						<phase>install</phase>
-						<goals>
-							<goal>sources</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-				<!-- Have to use version 1.2 since version 1.3 does not appear to work 
-					with ITDs -->
-				<version>1.2</version>
-				<dependencies>
-					<!-- You must use Maven 2.0.9 or above or these are ignored (see MNG-2972) -->
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjrt</artifactId>
-						<version>${org.aspectj-version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjtools</artifactId>
-						<version>${org.aspectj-version}</version>
-					</dependency>
-				</dependencies>
-
-				<configuration>
-					<outxml>true</outxml>
-					<source>${java-version}</source>
-					<target>${java-version}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>3.0.0</version>
-				<configuration>
-					<warSourceDirectory>WebContent</warSourceDirectory>
-					<webXml>WebContent\WEB-INF\web.xml</webXml>
-				</configuration>
-			</plugin>
-
-			<!-- <plugin> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-maven-plugin</artifactId> 
-				<version>9.0.6.v20130930</version> <configuration> <webApp> <contextPath>/${project.artifactId}</contextPath> 
-				</webApp> </configuration> </plugin> -->
-		</plugins>
-
-	</build>
 
 	<dependencyManagement>
 		<dependencies>
