@@ -29,7 +29,7 @@ import io.netty.buffer.Unpooled;
 public class DeviceOnlineNotify {
     private static final Logger logger = LoggerFactory.getLogger(DeviceOnlineNotify.class);
 
-    @Autowired
+    @Resource(name = "deviceService")
     private DeviceService deviceService;
 
     @Resource(name = "deviceChannels")

@@ -50,7 +50,6 @@ public class DeviceService implements IDeviceService, InitializingBean {
         return deviceList;
     }
 
-    @Override
     public List<String> getManagedGenomativeId(String devNo) {
         return deviceDao.getDeviceManangerGeomativeId(devNo);
     }

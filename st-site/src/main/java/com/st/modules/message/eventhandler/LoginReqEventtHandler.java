@@ -31,7 +31,7 @@ import io.netty.buffer.Unpooled;
 public class LoginReqEventtHandler {
     private static final Logger logger = LoggerFactory.getLogger(LoginReqEventtHandler.class);
 
-    @Autowired
+    @Resource(name = "deviceService")
     private DeviceService deviceService;
 
     @Resource(name = "deviceChannels")
