@@ -21,13 +21,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.github.shu1jia1</groupId>
-			<artifactId>wls-site</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>com.github.shu1jia1</groupId>
 			<artifactId>wls-common</artifactId>
 			<version>${project.version}</version>
 			<exclusions>
@@ -37,7 +30,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+ 
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
