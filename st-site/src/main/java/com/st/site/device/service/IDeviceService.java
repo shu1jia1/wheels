@@ -13,4 +13,6 @@ public interface IDeviceService {
      */
     ResponseData<List<DeviceInfo>> listByGenomativeId(String devId);
 
+    List<String> getManagedGenomativeId(String devNo);
+
 }

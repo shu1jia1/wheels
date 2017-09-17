@@ -52,7 +52,7 @@ enum CmdCode{
 
     CMD_LoginRequet = 0; //设备登陆
     //CMD_LoginResponse = 254; // 设备登陆回应
-    
+    CMD_DeviceOnline = 113;    //上线
 
     //注:获取设备列表的接口不在tcp通道上
     //ListDeviceRequest = 3;

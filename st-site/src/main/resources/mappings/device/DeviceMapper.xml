@@ -19,6 +19,13 @@
 		devVer=#{devVer} ,ip= #{ip} ,remarks = #{remarks} ,positionId
 		=#{positionId} ,updateTime = #{createTime}
 	</insert>
+	
+	<select id="getDeviceManangerGeomativeId" resultType="java.lang.String">
+ 		SELECT t.geoNo FROM cm_geo_device  t WHERE t.devno = #{devNo}
+	</select>
+			
+		
+		
 		
    <!--  <insert id="insertTestData">
         insert into ${tableName} (name,age)

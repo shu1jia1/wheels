@@ -1,5 +1,7 @@
 package com.st.modules.message.eventhandler;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -7,9 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.shu1jia1.common.utils.string.PrintUtil;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.st.common.message.entity.CHeaderMessageV2;
+import com.st.common.message.entity.STCommon.Address;
 import com.st.common.message.entity.STCommon.AddressType;
 import com.st.common.message.entity.STCommon.CmdCode;
 import com.st.modules.device.DeviceChannels;
@@ -40,20 +44,30 @@ public class DeviceOnlineNotify {
     @Subscribe
     public void handleLoginRequetReceiveEvent(final LoginRequetReceiveEvent loginEvent) {
         final CHeaderMessageV2 loginMessage = loginEvent.getcMessage();
-        String devNo = loginMessage.getSrcStr();
+        Address srcAddr = loginMessage.getSrcAddr();
+        if (AddressType.GEOMATIVE == srcAddr.getAddrType()) {
+            return;
+        }
+        String devNo = srcAddr.getIdentify();
         devChannels.addChannel(loginMessage.getDstType(), devNo, loginEvent.getChannel());
 
-        String gemativeId = deviceService.getManagedGenomativeId(devNo);
+        List<String> gemativeIdList = deviceService.getManagedGenomativeId(devNo);
+        if (gemativeIdList != null && !gemativeIdList.isEmpty()) {
+            if (gemativeIdList.size() > 1) {
+                logger.warn("geomative manage dev{}, is more than one!,current geoId is :", devNo,
+                        PrintUtil.toString(gemativeIdList));
+            }
+            String gemativeId = gemativeIdList.get(0);
+            byte[] respData = makeLoginNotify(loginMessage.getSrc(), loginMessage.getSrcType());
+            final CHeaderMessageV2 onlineMessage = loginMessage.makeResponse(true, respData)
+                    .withDest(AddressType.GEOMATIVE, gemativeId).withCloudSrc().withCmd(CmdCode.CMD_DeviceOnline)
+                    .build();
+            logger.info("Trans {} online msg to gemative {}.", loginMessage.getSrc(), gemativeIdList);
+            eventBus.post(new MessageSendEvent(onlineMessage));
+        } else {
+            logger.warn("geomative manage dev {} is not set.", devNo);
+        }
 
-        byte[] respData = makeLoginNotify(loginMessage.getSrc(), loginMessage.getSrcType());
-
-        final CHeaderMessageV2 onlineMessage = loginMessage.makeResponse(true, respData)
-                .withDest(AddressType.GEOMATIVE, gemativeId).withCloudSrc().withCmd(CmdCode.CMD_LoginRequet) // todo
-                                                                                                             // to
-                                                                                                             // online
-                .build();
-        logger.info("Trans {} online msg to gemative {}.", loginMessage.getSrc(), gemativeId);
-        eventBus.post(new MessageSendEvent(onlineMessage));
     }
 
     // 结构

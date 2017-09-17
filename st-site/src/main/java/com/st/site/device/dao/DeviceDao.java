@@ -10,4 +10,11 @@ public interface DeviceDao {
     public List<DeviceInfo> listDevice(@Param("geoNo")String genomativeID);
 
     public int insertOrUpdate(DeviceInfo device);
+    
+    /**
+     * 获取设备的管理geomativeId
+     * @param devNo
+     * @return
+     */
+    public List<String> getDeviceManangerGeomativeId(@Param("devNo") String devNo);
 }
