@@ -5,14 +5,14 @@ import java.io.Serializable;
 public class PageInfo implements Serializable {
     private static final long serialVersionUID = 4332370307564592686L;
     private static final String ORDER_ASC = "asc";
-    //    private static final String ORDER_DESC = "desc";
+    // private static final String ORDER_DESC = "desc";
 
     private int page;
     private int perPage;
     private int maxCount;
     private int total;
     private String sortby;
-    private String order; //asc desc
+    private String order;
 
     public PageInfo(int page, int perPage, int maxCount, String sortby, String order) {
         super();
@@ -49,26 +49,6 @@ public class PageInfo implements Serializable {
     }
 
     public PageInfo() {
-        //non param constructor
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("PagedData [page=");
-        builder.append(page);
-        builder.append(", per_page=");
-        builder.append(perPage);
-        builder.append(", per_page=");
-        builder.append(perPage);
-        builder.append(", maxcount=");
-        builder.append(maxCount);
-        builder.append(", total=");
-        builder.append(total);
-        builder.append(", sortby=");
-        builder.append(sortby);
-        builder.append("]");
-        return builder.toString();
     }
 
     public int getPage() {
@@ -126,4 +106,24 @@ public class PageInfo implements Serializable {
     public int getPageEndIndex() {
         return perPage * page - 1;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("PagedData [page=");
+        builder.append(page);
+        builder.append(", per_page=");
+        builder.append(perPage);
+        builder.append(", per_page=");
+        builder.append(perPage);
+        builder.append(", maxcount=");
+        builder.append(maxCount);
+        builder.append(", total=");
+        builder.append(total);
+        builder.append(", sortby=");
+        builder.append(sortby);
+        builder.append("]");
+        return builder.toString();
+    }
+
 }
